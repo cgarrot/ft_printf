@@ -14,6 +14,19 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
+typedef struct s_flags
+{
+	int		forcent;
+	int		hashtag;
+	int		zero;
+	int		minus;
+	int		plus;
+	int		space;
+	int		i;
+	int		count;
+}				t_flags;
+
+/*
 # define _s 1
 # define _S 2
 # define _p 3
@@ -35,5 +48,6 @@
 # define _plus 18
 
 # define _for_cent 19
+*/
 
 #endif

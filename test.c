@@ -12,9 +12,14 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+#include <string.h>
 
 int main(void)
 {
-	printf("%2s", "yolo");
+	printf("%s\n", "yolo");
+	printf("%33.9d\n", 777);
+	printf("%7d\n", 777);
+	printf("%.7d\n", 777);
+	printf("#%%%%%");
 	return (0);
 }
