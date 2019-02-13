@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/11 18:54:54 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/13 10:07:06 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/13 14:41:01 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,7 +40,7 @@ int		ft_atoi_2(char const *str)
 		i++;
 	if (str[i] == '-' && str[i - 1] != '+')
 	{
-		neg = -1;
+		neg = 1;
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
@@ -75,7 +75,113 @@ void	print_help(t_flags flags, t_compt compt, char *str)
 	printf("precision = [%d]\n\n", flags.precision);
 }
 
-int		parse(char *str, va_list args)
+void	ft_putnstr(char const *s, int size)
+{
+	if (s != 0)
+		write(1, s, size);
+}
+
+void	ft_putncaract(char c, int size)
+{
+	int		i;
+
+	i = -1;
+	while (++i != size)
+		ft_putchar(c);
+}
+
+void	check_p_w_str(char *str, t_flags flags)
+{
+	int		size;
+
+	size = flags.width - ft_strlen(str);
+	if (size < 0)
+		size = 0;
+	if (flags.precision)
+	{
+		if (flags.precision < ft_strlen(str))
+		{
+			if (flags.width)
+			{
+				if (flags.minus)
+				{
+					ft_putnstr(str, flags.precision);
+					ft_putncaract(' ', size);
+				}
+				else
+				{
+					if (flags.precision < flags.width)
+					{
+						ft_putncaract(' ', (flags.width - flags.precision));
+						ft_putnstr(str, flags.precision);
+					}
+					else
+					{
+						ft_putncaract(' ', size);
+						ft_putnstr(str, flags.precision);
+					}
+				}
+			}
+			else
+				ft_putnstr(str, flags.precision);
+		}
+		else
+		{
+			if (flags.minus)
+			{
+				ft_putstr(str);
+				ft_putncaract(' ', size);
+			}
+			else
+			{
+				ft_putncaract(' ', size);
+				ft_putstr(str);
+			}
+		}
+	}
+	else if (flags.point && !flags.precision)
+		ft_putncaract(' ', flags.width);
+	else if (flags.width)
+	{
+		if (flags.minus)
+		{
+			ft_putstr(str);
+			ft_putncaract(' ', size);
+		}
+		else
+		{
+			ft_putncaract(' ', size);
+			ft_putstr(str);
+		}
+	}
+}
+
+void	check_p_w_digit(int digit, t_flags flags)
+{
+	if (flags.plus)
+	{
+		
+	}
+}
+
+int		chose_flag(t_flags flags, va_list va)
+{
+	t_args		args;
+
+	if (flags.flag == 's')
+	{
+		args._s = va_arg(va, char*);
+		check_p_w_str(args._s, flags);
+	}
+	if (flags.flag == 'd')
+	{
+		args._d = va_arg(va, int);
+		check_p_w_digit(args._d, flags);
+	}
+	return (0);
+}
+
+int		parse(char *str, va_list va)
 {
 	t_flags		flags;
 	t_compt		compt;
@@ -83,7 +189,10 @@ int		parse(char *str, va_list args)
 	compt.i = -1;
 	while (str[++compt.i])
 	{
-		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' && str[compt.i + 1] != '\0'))
+		if (str[compt.i] != '%')
+			ft_putchar(str[compt.i]);
+		//not print %%
+		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' && str[compt.i + 1] != '\0' && str[compt.i - 1] != '%'))
 		{
 			compt.j = compt.i;
 			compt.k = 0;
@@ -104,7 +213,7 @@ int		parse(char *str, va_list args)
 					flags.point++;
 					compt.k = compt.j;
 				}
-				printf("%c", str[compt.j]);
+				//printf("%c", str[compt.j]);
 			}
 			//remplace flag hh et ll par autre lettre
 			if (str[compt.j - 1] == 'h' && str[compt.j] == 'h')
@@ -121,9 +230,11 @@ int		parse(char *str, va_list args)
 			flags.precision = ft_atoi_2(compt.num2);
 			flags.width = ft_atoi_2(compt.num);
 			compt.i = compt.j - 1;
-			print_help(flags, compt, str);
+			chose_flag(flags, va);
+			//print_help(flags, compt, str);
 		}
 	}
+	va_end(va);
 	return (0);
 }
 
@@ -137,6 +248,8 @@ int		ft_printf(const char *format, ...)
 
 int		main(void)
 {
-	ft_printf("%s", "salut");
+	ft_printf("salut%5s %1s %10.5s %.s\n", "zob", "Zoberie", "salut", "yolo");
+	printf("salut%5s %1s %10.5s %.s\n", "zob", "Zoberie", "salut", "yolo");
+	printf("|%+0d|\n", 52);
 	return (0);
 }

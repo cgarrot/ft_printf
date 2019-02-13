@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:09:30 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/12 16:22:54 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/13 11:31:33 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -52,9 +52,16 @@ int main(void)
 	//ft_printf("Salut %+d\n", 42);
 	//
 	//
-	printf("%05d\n", 85);
-	printf("%05.d\n", 85);
-	printf("%0.5d\n", 85);
-	printf("%-5.0d\n", 85);
+	printf(".|\n%.s\n", "salut");
+	printf(".5|%.5s\n", "salut");
+	printf("5.5|%5.5s\n", "salut");
+	printf(".|\n%.s\n", "salut");
+	printf(".2|%.2s\n", "salut");
+	printf("2.2|%2.2s\n", "salut");
+	printf(".|\n%.s\n", "salut");
+	printf(".8|%-.8s|\n", "salut");
+	printf("8.8|%-8.8s|\n", "salut");
+	printf("10.8|%-10.8s|\n", "salut");
+	printf("%6s\n", "salut");
 	return (0);
 }

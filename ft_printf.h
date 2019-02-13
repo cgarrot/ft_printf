@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/13 09:38:15 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/13 13:51:30 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -34,5 +34,11 @@ typedef struct	s_compt
 	char	*num;
 	char	*num2;
 }				t_compt;
+
+typedef struct	s_args
+{
+	char	*_s;
+	int		_d;
+}				t_args;
 
 #endif
