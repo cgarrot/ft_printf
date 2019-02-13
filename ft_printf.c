@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/11 18:54:54 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/13 14:41:01 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/13 17:09:54 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -34,7 +34,7 @@ int		ft_atoi_2(char const *str)
 	neg = 1;
 	nbr = 0;
 	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
-			|| str[i] == '\f' || str[i] == '\r' || ft_isalpha(str[i]) || str[i] == '%')
+			|| str[i] == '\f' || str[i] == '\r' || ft_isalpha(str[i]) || str[i] == '%' || str[i] == '0')
 		i++;
 	if (str[i] == '+')
 		i++;
@@ -66,6 +66,7 @@ void	print_help(t_flags flags, t_compt compt, char *str)
 	printf("flag = [%c]\n", flags.flag);
 	printf("param = [%s]\n", compt.num);
 	printf("atoi flags.precision = [%s]\n", compt.num2);
+	printf("atoi flags.width = [%s]\n", compt.num);
 	printf("# = [%d]\n", flags.hashtag);
 	printf("+ = [%d]\n", flags.plus);
 	printf("- = [%d]\n", flags.minus);
@@ -158,9 +159,96 @@ void	check_p_w_str(char *str, t_flags flags)
 
 void	check_p_w_digit(int digit, t_flags flags)
 {
+	int		plus;
+	char	*number;
+	number = ft_itoa(digit);
 	if (flags.plus)
 	{
-		
+		if (flags.precision)
+		{
+			if ((flags.width > flags.precision && flags.precision > ft_strlen(number)) || flags.precision > ft_strlen(number))
+			{
+				if (flags.width > flags.precision)
+					ft_putncaract(' ', (flags.width - flags.precision - 1));
+				ft_putchar('+');
+				ft_putncaract('0', (flags.precision - ft_strlen(number)));
+				ft_putstr(number);
+			}
+			if (flags.precision < ft_strlen(number))
+			{
+				ft_putncaract(' ', (flags.width - ft_strlen(number) - 1));
+				ft_putchar('+');
+				ft_putstr(number);
+			}
+		}
+		else if (flags.width)
+		{
+			if (!flags.point && flags.zero && (flags.width > ft_strlen(number)))
+			{
+				ft_putchar('+');
+				ft_putncaract('0', (flags.width - ft_strlen(number) - 1));
+				ft_putstr(number);
+			}
+			else if ((!flags.point && (flags.width > ft_strlen(number))) || ((flags.point && (flags.width > ft_strlen(number))) && flags.zero))
+			{
+				ft_putncaract(' ', (flags.width - ft_strlen(number) - 1));
+				ft_putchar('+');
+				ft_putstr(number);
+			}
+		}
+		else
+		{
+			ft_putchar('+');
+			ft_putstr(number);
+		}
+	}
+	else if (flags.minus)
+	{
+		if ((flags.width > flags.precision && flags.precision > ft_strlen(number)) || flags.precision > ft_strlen(number))
+		{
+			ft_putncaract('0', (flags.precision - ft_strlen(number)));
+			ft_putstr(number);
+			if (flags.width > flags.precision)
+				ft_putncaract(' ', (flags.width - flags.precision));
+		}
+		if (flags.precision < ft_strlen(number))
+		{
+			ft_putstr(number);
+			if (flags.width > flags.precision)
+				ft_putncaract(' ', (flags.width - ft_strlen(number)));
+		}
+	}
+	else
+	{
+		if (flags.precision)
+		{
+			if ((flags.width > flags.precision && flags.precision > ft_strlen(number)) || flags.precision > ft_strlen(number))
+			{
+				if (flags.width > flags.precision)
+					ft_putncaract(' ', (flags.width - flags.precision));
+				ft_putncaract('0', (flags.precision - ft_strlen(number)));
+				ft_putstr(number);
+			}
+			if (flags.precision < ft_strlen(number))
+			{
+				ft_putncaract(' ', (flags.width - ft_strlen(number)));
+				ft_putstr(number);
+			}
+		}
+		else if (flags.width)
+		{
+			if (!flags.point && flags.zero && (flags.width > ft_strlen(number)))
+			{
+				ft_putncaract('0', (flags.width - ft_strlen(number)));
+				ft_putstr(number);
+			}
+			else if ((!flags.point && (flags.width > ft_strlen(number))) || ((flags.point && (flags.width > ft_strlen(number))) && flags.zero))
+			{
+				ft_putncaract(' ', (flags.width - ft_strlen(number)));
+			}
+			else
+				ft_putstr(number);
+		}
 	}
 }
 
@@ -202,7 +290,7 @@ int		parse(char *str, va_list va)
 			{
 				if (str[compt.j] == '#')
 					flags.hashtag++;
-				if (str[compt.j] == '+' && (str[compt.j - 1] == '%' || str[compt.j - 1] == '-'))
+				if (str[compt.j] == '+' && (str[compt.j - 1] == '%' || str[compt.j - 1] == '-' || str[compt.j - 1] == '0'))
 					flags.plus++;
 				if (str[compt.j] == '-' && (str[compt.j - 1] == '%' && str[compt.j + 1] != '+'))
 					flags.minus++;
@@ -238,7 +326,7 @@ int		parse(char *str, va_list va)
 	return (0);
 }
 
-int		ft_printf(const char *format, ...)
+int		my_printf(const char *format, ...)
 {
 	va_list		va;
 
@@ -248,8 +336,5 @@ int		ft_printf(const char *format, ...)
 
 int		main(void)
 {
-	ft_printf("salut%5s %1s %10.5s %.s\n", "zob", "Zoberie", "salut", "yolo");
-	printf("salut%5s %1s %10.5s %.s\n", "zob", "Zoberie", "salut", "yolo");
-	printf("|%+0d|\n", 52);
 	return (0);
 }
