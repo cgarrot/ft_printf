@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/11 18:54:54 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/13 17:09:54 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/14 14:21:34 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -91,7 +91,7 @@ void	ft_putncaract(char c, int size)
 		ft_putchar(c);
 }
 
-void	check_p_w_str(char *str, t_flags flags)
+int		check_p_w_str(char *str, t_flags flags)
 {
 	int		size;
 
@@ -108,6 +108,7 @@ void	check_p_w_str(char *str, t_flags flags)
 				{
 					ft_putnstr(str, flags.precision);
 					ft_putncaract(' ', size);
+					return (flags.nb_caract = flags.nb_caract + size + flags.precision);
 				}
 				else
 				{
@@ -115,16 +116,19 @@ void	check_p_w_str(char *str, t_flags flags)
 					{
 						ft_putncaract(' ', (flags.width - flags.precision));
 						ft_putnstr(str, flags.precision);
+						return (flags.nb_caract = flags.nb_caract + (flags.width - flags.precision) + flags.precision);
 					}
 					else
 					{
 						ft_putncaract(' ', size);
 						ft_putnstr(str, flags.precision);
+						return (flags.nb_caract = flags.nb_caract + size + flags.precision);
 					}
 				}
 			}
 			else
 				ft_putnstr(str, flags.precision);
+				return (flags.nb_caract = flags.nb_caract + flags.precision);
 		}
 		else
 		{
@@ -132,32 +136,40 @@ void	check_p_w_str(char *str, t_flags flags)
 			{
 				ft_putstr(str);
 				ft_putncaract(' ', size);
+				return (flags.nb_caract += size + ft_strlen(str));
 			}
 			else
 			{
 				ft_putncaract(' ', size);
 				ft_putstr(str);
+				return (flags.nb_caract = flags.nb_caract + size + ft_strlen(str));
 			}
 		}
 	}
 	else if (flags.point && !flags.precision)
+	{
 		ft_putncaract(' ', flags.width);
+		return (flags.nb_caract = flags.nb_caract + flags.width);
+	}
 	else if (flags.width)
 	{
 		if (flags.minus)
 		{
 			ft_putstr(str);
 			ft_putncaract(' ', size);
+			return (flags.nb_caract = flags.nb_caract + size + ft_strlen(str));
 		}
 		else
 		{
 			ft_putncaract(' ', size);
 			ft_putstr(str);
+			return (flags.nb_caract = flags.nb_caract + size + ft_strlen(str));
 		}
 	}
+	return (0);
 }
 
-void	check_p_w_digit(int digit, t_flags flags)
+int		check_p_w_digit(int digit, t_flags flags)
 {
 	int		plus;
 	char	*number;
@@ -249,7 +261,10 @@ void	check_p_w_digit(int digit, t_flags flags)
 			else
 				ft_putstr(number);
 		}
+		else
+			ft_putstr(number);
 	}
+	return (0);
 }
 
 int		chose_flag(t_flags flags, va_list va)
@@ -259,14 +274,14 @@ int		chose_flag(t_flags flags, va_list va)
 	if (flags.flag == 's')
 	{
 		args._s = va_arg(va, char*);
-		check_p_w_str(args._s, flags);
+		flags.nb_caract = check_p_w_str(args._s, flags);
 	}
 	if (flags.flag == 'd')
 	{
 		args._d = va_arg(va, int);
-		check_p_w_digit(args._d, flags);
+		flags.nb_caract = check_p_w_digit(args._d, flags);
 	}
-	return (0);
+	return (flags.nb_caract);
 }
 
 int		parse(char *str, va_list va)
@@ -275,10 +290,14 @@ int		parse(char *str, va_list va)
 	t_compt		compt;
 
 	compt.i = -1;
+	flags.nb_caract = 0;
 	while (str[++compt.i])
 	{
 		if (str[compt.i] != '%')
+		{
 			ft_putchar(str[compt.i]);
+			flags.nb_caract++;
+		}
 		//not print %%
 		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' && str[compt.i + 1] != '\0' && str[compt.i - 1] != '%'))
 		{
@@ -318,12 +337,12 @@ int		parse(char *str, va_list va)
 			flags.precision = ft_atoi_2(compt.num2);
 			flags.width = ft_atoi_2(compt.num);
 			compt.i = compt.j - 1;
-			chose_flag(flags, va);
+			flags.nb_caract =chose_flag(flags, va);
 			//print_help(flags, compt, str);
 		}
 	}
 	va_end(va);
-	return (0);
+	return (flags.nb_caract);
 }
 
 int		my_printf(const char *format, ...)
@@ -336,5 +355,91 @@ int		my_printf(const char *format, ...)
 
 int		main(void)
 {
+	my_printf("%d\n", my_printf("1string 1 %s string 2 %s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("1string 1 %s string 2 %s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("2string 1 %   s string 2 % s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("3string 1 %   s string 2 % s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("4string 1 %12s string 2 %12s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("4string 1 %12s string 2 %12s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("4string 1 %-12s string 2 %-12s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("4string 1 %-12s string 2 %-12s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("5string 1 %0s string 2 %0s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("5string 1 %0s string 2 %0s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("6string 1 %012s string 2 %012s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("6string 1 %012s string 2 %012s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("7string 1 %-012s string 2 %012s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("7string 1 %-012s string 2 %012s\n\n", "toto", "bonjour"));
+
+
+	my_printf("%d\n", my_printf("12string 1 %-+5s string 2 %-+5s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("12string 1 %-+5s string 2 %-+5s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("13string 1 %-+05s string 2 %-+05s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("13string 1 %-+05s string 2 %-+05s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("14string 1 %+-5s string 2 %+-5s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("14string 1 %+-5s string 2 %+-5s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("15string 1 %.s string 2 %.s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("15string 1 %.s string 2 %.s\n\n", "toto", "bonjour"));
+
+	my_printf("%d\n", my_printf("16string 1 %.6s string 2 %.6s\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("16string 1 %.6s string 2 %.6s\n\n", "toto", "bonjour"));
+
+	/*
+	   my_printf("%d\n", my_printf("1chiffre 1 %d chiffre 2 %d\n", 42, -42));
+	   printf("%d\n\n", printf("1chiffre 1 %d chiffre 2 %d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("2chiffre 1 %   d chiffre 2 % d\n", 42, -42));
+	   printf("%d\n\n", printf("2chiffre 1 %   d chiffre 2 % d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("3chiffre 1 %12d chiffre 2 %12d\n", 42, -42));
+	   printf("%d\n\n", printf("3chiffre 1 %12d chiffre 2 %12d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("4chiffre 1 %-12d chiffre 2 %-12d\n", 42, -42));
+	   printf("%d\n\n", printf("4chiffre 1 %-12d chiffre 2 %-12d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("5chiffre 1 %0d chiffre 2 %0d\n", 42, -42));
+	   printf("%d\n\n", printf("5chiffre 1 %0d chiffre 2 %0d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("6chiffre 1 %012d chiffre 2 %012d\n", 42, -42));
+	   printf("%d\n\n", printf("6chiffre 1 %012d chiffre 2 %012d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("7chiffre 1 %-012d chiffre 2 %012d\n", 42, -42));
+	   printf("%d\n\n", printf("7chiffre 1 %-012d chiffre 2 %012d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("8chiffre 1 %*d chiffre 2 %*d\n", 42, 6, 6, 6));
+	   printf("%d\n\n", printf("8chiffre 1 %*d chiffre 2 %*d\n\n", 42, 6, 6, 6));
+
+	   my_printf("%d\n", my_printf("9chiffre 1 %+d chiffre 2 %+d\n", 42, 6, -42, 6));
+	   printf("%d\n\n", printf("9chiffre 1 %+d chiffre 2 %+d\n\n", 42, 6, -42, 6));
+
+	   my_printf("%d\n", my_printf("10chiffre 1 %+12d chiffre 2 %+12d\n", 42, 6, -42, 6));
+	   printf("%d\n\n", printf("10chiffre 1 %+12d chiffre 2 %+12d\n\n", 42, 6, -42, 6));
+
+	   my_printf("%d\n", my_printf("11chiffre 1 %*12d chiffre 2 %*12d\n", 42, -6, 42, 6));
+	   printf("%d\n\n", printf("11chiffre 1 %*12d chiffre 2 %*12d\n\n", 42, -6, 42, 6));
+
+	   my_printf("%d\n", my_printf("12chiffre 1 %-+5d chiffre 2 %-+5d\n", 42, -42));
+	   printf("%d\n\n", printf("12chiffre 1 %-+5d chiffre 2 %-+5d\n\n", 42, -42));  
+
+	   my_printf("%d\n", my_printf("13chiffre 1 %-+05d chiffre 2 %-+05d\n", 42, -42));
+	   printf("%d\n\n", printf("13chiffre 1 %-+05d chiffre 2 %-+05d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("14chiffre 1 %+-5d chiffre 2 %+-5d\n", 42, -42));
+	   printf("%d\n\n", printf("14chiffre 1 %+-5d chiffre 2 %+-5d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("15chiffre 1 %.d chiffre 2 %.d\n", 42, -42));
+	   printf("%d\n\n", printf("15chiffre 1 %.d chiffre 2 %.d\n\n", 42, -42));
+
+	   my_printf("%d\n", my_printf("16chiffre 1 %.6d chiffre 2 %.6d\n", 42, -42));
+	   printf("%d\n\n", printf("16chiffre 1 %.6d chiffre 2 %.6d\n\n", 42, -42));
+	   */
 	return (0);
 }

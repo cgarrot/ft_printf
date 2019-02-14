@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/13 13:51:30 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/14 14:21:39 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -24,6 +24,7 @@ typedef struct	s_flags
 	char	flag;
 	int		width;
 	int		precision;
+	int		nb_caract;
 }				t_flags;
 
 typedef struct	s_compt
