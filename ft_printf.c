@@ -98,7 +98,10 @@ int		check_p_w_str(char *str, t_flags flags)
 	size = flags.width - ft_strlen(str);
 	if (size < 0)
 		size = 0;
-	if (flags.precision)
+	if (flags.point && (!flags.precision && !flags.width))
+		return (0);
+
+	else if (flags.precision)
 	{
 		if (flags.precision < ft_strlen(str))
 		{
@@ -108,7 +111,7 @@ int		check_p_w_str(char *str, t_flags flags)
 				{
 					ft_putnstr(str, flags.precision);
 					ft_putncaract(' ', size);
-					return (flags.nb_caract = flags.nb_caract + size + flags.precision);
+					return (size + flags.precision);
 				}
 				else
 				{
@@ -116,19 +119,19 @@ int		check_p_w_str(char *str, t_flags flags)
 					{
 						ft_putncaract(' ', (flags.width - flags.precision));
 						ft_putnstr(str, flags.precision);
-						return (flags.nb_caract = flags.nb_caract + (flags.width - flags.precision) + flags.precision);
+						return ((flags.width - flags.precision) + flags.precision);
 					}
 					else
 					{
 						ft_putncaract(' ', size);
 						ft_putnstr(str, flags.precision);
-						return (flags.nb_caract = flags.nb_caract + size + flags.precision);
+						return (size + flags.precision);
 					}
 				}
 			}
 			else
 				ft_putnstr(str, flags.precision);
-				return (flags.nb_caract = flags.nb_caract + flags.precision);
+				return (flags.precision);
 		}
 		else
 		{
@@ -136,20 +139,21 @@ int		check_p_w_str(char *str, t_flags flags)
 			{
 				ft_putstr(str);
 				ft_putncaract(' ', size);
-				return (flags.nb_caract += size + ft_strlen(str));
+				return (size + ft_strlen(str));
 			}
 			else
 			{
 				ft_putncaract(' ', size);
 				ft_putstr(str);
-				return (flags.nb_caract = flags.nb_caract + size + ft_strlen(str));
+				return (size + ft_strlen(str));
 			}
 		}
 	}
+
 	else if (flags.point && !flags.precision)
 	{
 		ft_putncaract(' ', flags.width);
-		return (flags.nb_caract = flags.nb_caract + flags.width);
+		return (flags.width);
 	}
 	else if (flags.width)
 	{
@@ -157,14 +161,26 @@ int		check_p_w_str(char *str, t_flags flags)
 		{
 			ft_putstr(str);
 			ft_putncaract(' ', size);
-			return (flags.nb_caract = flags.nb_caract + size + ft_strlen(str));
+			return (size + ft_strlen(str));
 		}
+
 		else
 		{
 			ft_putncaract(' ', size);
 			ft_putstr(str);
-			return (flags.nb_caract = flags.nb_caract + size + ft_strlen(str));
+			return (size + ft_strlen(str));
 		}
+	}
+	else if (flags.plus && flags.minus && (size + 1))
+		{
+			ft_putstr(str);
+			ft_putncaract(' ', size + 1);
+			return (size + ft_strlen(str));
+		}
+	else
+	{
+		ft_putstr(str);
+		return (ft_strlen(str));
 	}
 	return (0);
 }
@@ -185,12 +201,15 @@ int		check_p_w_digit(int digit, t_flags flags)
 				ft_putchar('+');
 				ft_putncaract('0', (flags.precision - ft_strlen(number)));
 				ft_putstr(number);
+				//add conditon if in return
+				return (number + 1 + (flags.precision - ft_strlen(number)));
 			}
 			if (flags.precision < ft_strlen(number))
 			{
 				ft_putncaract(' ', (flags.width - ft_strlen(number) - 1));
 				ft_putchar('+');
 				ft_putstr(number);
+				return (number + 1 + (flags.width - ft_strlen(number) - 1));
 			}
 		}
 		else if (flags.width)
@@ -200,18 +219,21 @@ int		check_p_w_digit(int digit, t_flags flags)
 				ft_putchar('+');
 				ft_putncaract('0', (flags.width - ft_strlen(number) - 1));
 				ft_putstr(number);
+				return (number + 1 + (flags.width - ft_strlen(number) - 1));
 			}
 			else if ((!flags.point && (flags.width > ft_strlen(number))) || ((flags.point && (flags.width > ft_strlen(number))) && flags.zero))
 			{
 				ft_putncaract(' ', (flags.width - ft_strlen(number) - 1));
 				ft_putchar('+');
 				ft_putstr(number);
+				return (number + 1 + (flags.width - ft_strlen(number) - 1));
 			}
 		}
 		else
 		{
 			ft_putchar('+');
 			ft_putstr(number);
+			return (number + 1);
 		}
 	}
 	else if (flags.minus)
@@ -259,44 +281,67 @@ int		check_p_w_digit(int digit, t_flags flags)
 				ft_putncaract(' ', (flags.width - ft_strlen(number)));
 			}
 			else
+			{
 				ft_putstr(number);
+				return (ft_strlen(number));
+			}
 		}
 		else
+		{
 			ft_putstr(number);
+			return (ft_strlen(number));
+		}
 	}
 	return (0);
 }
 
-int		chose_flag(t_flags flags, va_list va)
+int		check_p_w_caract(char c, t_flags flags)
+{
+	if (flags.precision)
+	{
+	
+	}
+	else
+		ft_putchar(c);
+	return (1);
+}
+
+int		chose_flag(t_flags flags, va_list va, int nb)
 {
 	t_args		args;
 
 	if (flags.flag == 's')
 	{
 		args._s = va_arg(va, char*);
-		flags.nb_caract = check_p_w_str(args._s, flags);
+		nb += check_p_w_str(args._s, flags);
 	}
 	if (flags.flag == 'd')
 	{
 		args._d = va_arg(va, int);
-		flags.nb_caract = check_p_w_digit(args._d, flags);
+		nb += check_p_w_digit(args._d, flags);
 	}
-	return (flags.nb_caract);
+	if (flags.flag == 'c')
+	{
+		args._c = va_arg(va, char);
+		nb += check_p_w_caract(args._c, flags);
+	}
+	return (nb);
 }
 
 int		parse(char *str, va_list va)
 {
 	t_flags		flags;
 	t_compt		compt;
+	int			nb;
 
+	nb = 0;
 	compt.i = -1;
-	flags.nb_caract = 0;
 	while (str[++compt.i])
 	{
 		if (str[compt.i] != '%')
 		{
 			ft_putchar(str[compt.i]);
-			flags.nb_caract++;
+			nb++;
 		}
 		//not print %%
 		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' && str[compt.i + 1] != '\0' && str[compt.i - 1] != '%'))
@@ -311,11 +356,11 @@ int		parse(char *str, va_list va)
 					flags.hashtag++;
 				if (str[compt.j] == '+' && (str[compt.j - 1] == '%' || str[compt.j - 1] == '-' || str[compt.j - 1] == '0'))
 					flags.plus++;
-				if (str[compt.j] == '-' && (str[compt.j - 1] == '%' && str[compt.j + 1] != '+'))
+				if (str[compt.j] == '-')
 					flags.minus++;
 				if (str[compt.j] == '0' && (str[compt.j - 1] == '%' || str[compt.j - 1] == '+'))
 					flags.zero++;
-				if (str[compt.j] == '.' && (ft_isdigit(str[compt.j - 1]) || ft_isdigit(str[compt.j + 1])))
+				if (str[compt.j] == '.' && ((ft_isdigit(str[compt.j - 1]) || ft_isdigit(str[compt.j + 1])) || (str[compt.j - 1] == '%' && str[compt.j + 1] == 's')))
 				{
 					flags.point++;
 					compt.k = compt.j;
@@ -337,17 +382,18 @@ int		parse(char *str, va_list va)
 			flags.precision = ft_atoi_2(compt.num2);
 			flags.width = ft_atoi_2(compt.num);
 			compt.i = compt.j - 1;
-			flags.nb_caract =chose_flag(flags, va);
+			nb = chose_flag(flags, va, nb);
 			//print_help(flags, compt, str);
 		}
 	}
 	va_end(va);
-	return (flags.nb_caract);
+	return (nb + 1);
 }
 
 int		my_printf(const char *format, ...)
 {
 	va_list		va;
+	int		nb = 0;
 
 	va_start(va, format);
 	return (parse((char*)format, va));
@@ -355,6 +401,14 @@ int		my_printf(const char *format, ...)
 
 int		main(void)
 {
+
+	printf("|%c|\n", 'f');
+	printf("|%.c|\n", 'f');
+	printf("|%3.3c|\n", 'f');
+	printf("|%.3c|\n", 'f');
+	printf("|%3c|\n", 'f');
+	printf("|%-3c|\n", 'f');
+/*
 	my_printf("%d\n", my_printf("1string 1 %s string 2 %s\n", "toto", "bonjour"));
 	printf("%d\n\n", printf("1string 1 %s string 2 %s\n\n", "toto", "bonjour"));
 
@@ -377,13 +431,13 @@ int		main(void)
 	printf("%d\n\n", printf("7string 1 %-012s string 2 %012s\n\n", "toto", "bonjour"));
 
 
-	my_printf("%d\n", my_printf("12string 1 %-+5s string 2 %-+5s\n", "toto", "bonjour"));
-	printf("%d\n\n", printf("12string 1 %-+5s string 2 %-+5s\n\n", "toto", "bonjour"));
+	my_printf("%d\n", my_printf("12string 1 %-+5s string 2 %-+5s|\n", "toto", "bonjour"));
+	printf("%d\n\n", printf("12string 1 %-+5s string 2 %-+5s|\n\n", "toto", "bonjour"));
 
 	my_printf("%d\n", my_printf("13string 1 %-+05s string 2 %-+05s\n", "toto", "bonjour"));
 	printf("%d\n\n", printf("13string 1 %-+05s string 2 %-+05s\n\n", "toto", "bonjour"));
 
-	my_printf("%d\n", my_printf("14string 1 %+-5s string 2 %+-5s\n", "toto", "bonjour"));
+	my_printf("%d\n", my_printf("|14string 1 %+-5s string 2 %+-5s\n", "toto", "bonjour"));
 	printf("%d\n\n", printf("14string 1 %+-5s string 2 %+-5s\n\n", "toto", "bonjour"));
 
 	my_printf("%d\n", my_printf("15string 1 %.s string 2 %.s\n", "toto", "bonjour"));
@@ -391,8 +445,7 @@ int		main(void)
 
 	my_printf("%d\n", my_printf("16string 1 %.6s string 2 %.6s\n", "toto", "bonjour"));
 	printf("%d\n\n", printf("16string 1 %.6s string 2 %.6s\n\n", "toto", "bonjour"));
-
-	/*
+	
 	   my_printf("%d\n", my_printf("1chiffre 1 %d chiffre 2 %d\n", 42, -42));
 	   printf("%d\n\n", printf("1chiffre 1 %d chiffre 2 %d\n\n", 42, -42));
 
@@ -440,6 +493,6 @@ int		main(void)
 
 	   my_printf("%d\n", my_printf("16chiffre 1 %.6d chiffre 2 %.6d\n", 42, -42));
 	   printf("%d\n\n", printf("16chiffre 1 %.6d chiffre 2 %.6d\n\n", 42, -42));
-	   */
+	*/
 	return (0);
 }

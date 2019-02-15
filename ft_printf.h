@@ -40,6 +40,7 @@ typedef struct	s_args
 {
 	char	*_s;
 	int		_d;
+	char	_c;
 }				t_args;
 
 #endif
