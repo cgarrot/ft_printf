@@ -189,6 +189,8 @@ int		check_p_w_digit(int digit, t_flags flags)
 {
 	int		plus;
 	char	*number;
+	int		yesno;
+	yesno = 0;
 	number = ft_itoa(digit);
 	if (flags.plus)
 	{
@@ -197,19 +199,23 @@ int		check_p_w_digit(int digit, t_flags flags)
 			if ((flags.width > flags.precision && flags.precision > ft_strlen(number)) || flags.precision > ft_strlen(number))
 			{
 				if (flags.width > flags.precision)
+				{
 					ft_putncaract(' ', (flags.width - flags.precision - 1));
+					yesno++;
+				}
 				ft_putchar('+');
 				ft_putncaract('0', (flags.precision - ft_strlen(number)));
 				ft_putstr(number);
-				//add conditon if in return
-				return (number + 1 + (flags.precision - ft_strlen(number)));
+				if (yesno)
+					return (ft_strlen(number) + 1 + (flags.precision - ft_strlen(number)) + (flags.width - flags.precision - 1));
+				return (ft_strlen(number) + 1 + (flags.precision - ft_strlen(number)));
 			}
 			if (flags.precision < ft_strlen(number))
 			{
 				ft_putncaract(' ', (flags.width - ft_strlen(number) - 1));
 				ft_putchar('+');
 				ft_putstr(number);
-				return (number + 1 + (flags.width - ft_strlen(number) - 1));
+				return (ft_strlen(number) + 1 + (flags.width - ft_strlen(number) - 1));
 			}
 		}
 		else if (flags.width)
@@ -219,21 +225,21 @@ int		check_p_w_digit(int digit, t_flags flags)
 				ft_putchar('+');
 				ft_putncaract('0', (flags.width - ft_strlen(number) - 1));
 				ft_putstr(number);
-				return (number + 1 + (flags.width - ft_strlen(number) - 1));
+				return (ft_strlen(number) + 1 + (flags.width - ft_strlen(number) - 1));
 			}
 			else if ((!flags.point && (flags.width > ft_strlen(number))) || ((flags.point && (flags.width > ft_strlen(number))) && flags.zero))
 			{
 				ft_putncaract(' ', (flags.width - ft_strlen(number) - 1));
 				ft_putchar('+');
 				ft_putstr(number);
-				return (number + 1 + (flags.width - ft_strlen(number) - 1));
+				return (ft_strlen(number) + 1 + (flags.width - ft_strlen(number) - 1));
 			}
 		}
 		else
 		{
 			ft_putchar('+');
 			ft_putstr(number);
-			return (number + 1);
+			return (ft_strlen(number) + 1);
 		}
 	}
 	else if (flags.minus)
@@ -249,7 +255,11 @@ int		check_p_w_digit(int digit, t_flags flags)
 		{
 			ft_putstr(number);
 			if (flags.width > flags.precision)
+			{
 				ft_putncaract(' ', (flags.width - ft_strlen(number)));
+				return (ft_strlen(number) + (flags.width - ft_strlen(number)));
+			}
+			return (ft_strlen(number));
 		}
 	}
 	else
@@ -299,7 +309,18 @@ int		check_p_w_caract(char c, t_flags flags)
 {
 	if (flags.precision)
 	{
-	
+		if (flags.minus)
+		{
+			ft_putchar(c);
+			ft_putncaract(' ', (flags.precision - 1));
+			return (flags.precision);
+		}
+		else
+		{
+			ft_putncaract(' ', (flags.precision - 1));
+			ft_putchar(c);
+			return (flags.precision);
+		}
 	}
 	else
 		ft_putchar(c);
@@ -343,6 +364,7 @@ int		parse(char *str, va_list va)
 			ft_putchar(str[compt.i]);
 			nb++;
 		}
+
 		//not print %%
 		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' && str[compt.i + 1] != '\0' && str[compt.i - 1] != '%'))
 		{
@@ -385,6 +407,22 @@ int		parse(char *str, va_list va)
 			nb = chose_flag(flags, va, nb);
 			//print_help(flags, compt, str);
 		}
+		//marche pas avec des espaces et crash avec un 1
+		//mettre dans les flags sinon les espaces ne marche pas
+		flags.forcent = 0;
+		if (str[compt.i] == '%')
+		{
+			while (str[compt.i] == '%')
+			{
+				flags.forcent++;
+				compt.i++;
+			}
+			if (flags.forcent % 2 == 0)
+				ft_putncaract('%', (flags.forcent / 2));
+			else
+				ft_putncaract('%', ((flags.forcent + 1) / 2));
+			compt.i--;
+		}
 	}
 	va_end(va);
 	return (nb + 1);
@@ -401,13 +439,15 @@ int		my_printf(const char *format, ...)
 
 int		main(void)
 {
-
-	printf("|%c|\n", 'f');
+	int test = 12;
+	printf("|%-x|\n", 15);
+	printf("|%.c|\n", 'f');
 	printf("|%.c|\n", 'f');
 	printf("|%3.3c|\n", 'f');
 	printf("|%.3c|\n", 'f');
 	printf("|%3c|\n", 'f');
-	printf("|%-3c|\n", 'f');
+	printf("|%0-3c|\n", 'f');
+	printf("|%3c|\n", 'f');
 /*
 	my_printf("%d\n", my_printf("1string 1 %s string 2 %s\n", "toto", "bonjour"));
 	printf("%d\n\n", printf("1string 1 %s string 2 %s\n\n", "toto", "bonjour"));
