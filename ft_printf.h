@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/14 14:21:39 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/18 15:31:20 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -21,6 +21,7 @@ typedef struct	s_flags
 	int		minus;
 	int		plus;
 	int		point;
+	int		space;
 	char	flag;
 	int		width;
 	int		precision;
