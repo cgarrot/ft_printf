@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/11 18:54:54 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/18 15:31:18 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/18 18:37:26 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -27,25 +27,19 @@ int		ft_isflags(char c)
 int		ft_atoi_2(char const *str)
 {
 	int		i;
-	int		neg;
 	int		nbr;
 
 	i = 0;
-	neg = 1;
 	nbr = 0;
 	while (str[i] == ' ' || str[i] == '\n' || str[i] == '\t' || str[i] == '\v'
-			|| str[i] == '\f' || str[i] == '\r' || ft_isalpha(str[i]) || str[i] == '%' || str[i] == '0')
+			|| str[i] == '\f' || str[i] == '\r' || ft_isalpha(str[i])
+			|| str[i] == '%' || str[i] == '0' || str[i] == '+' || str[i] == '-')
 		i++;
 	if (str[i] == '+')
 		i++;
-	if (str[i] == '-' && str[i - 1] != '+')
-	{
-		neg = 1;
-		i++;
-	}
 	while (str[i] >= '0' && str[i] <= '9')
 		nbr = nbr * 10 + str[i++] - '0';
-	return (nbr * neg);
+	return (nbr);
 }
 
 t_flags init(t_flags flags)
@@ -233,10 +227,38 @@ int		check_p_w_digit(int digit, t_flags flags)
 		{
 			if (!flags.point && flags.zero && (flags.width > ft_strlen(number)))
 			{
-				ft_putchar('+');
-				ft_putncaract('0', (flags.width - ft_strlen(number) - 1));
+				if (digit > 0)
+				{
+					ft_putchar('+');
+					yesno++;
+				}
+				if (!flags.minus && !flags.plus)
+				{
+					ft_putncaract('0', (flags.width - ft_strlen(number) - yesno));
+					yesno++;
+				}
 				ft_putstr(number);
-				return (ft_strlen(number) + flags.space + 1 + (flags.width - ft_strlen(number) - 1));
+				//printf("[%zu]\n", ft_strlen(number));
+				//printf("[%d]\n", yesno);
+				//printf("[%zu]\n", flags.width - ft_strlen(number));
+				if (flags.minus)
+				{
+					ft_putncaract(' ', (flags.width - ft_strlen(number) - yesno));
+					return (ft_strlen(number) + flags.space + (flags.width - ft_strlen(number)));
+				}
+
+				return (ft_strlen(number) + flags.space + ((flags.width - ft_strlen(number)) - yesno));
+			}
+			else if (flags.minus)
+			{
+				if (digit > 0)
+				{
+					ft_putchar('+');
+					yesno++;
+				}
+				ft_putstr(number);
+				ft_putncaract(' ', (flags.width - ft_strlen(number) - yesno));
+				return (ft_strlen(number) + flags.space + (flags.width - ft_strlen(number)));
 			}
 			else if ((!flags.point && (flags.width > ft_strlen(number))) || ((flags.point && (flags.width > ft_strlen(number))) && flags.zero))
 			{
@@ -293,12 +315,13 @@ int		check_p_w_digit(int digit, t_flags flags)
 					ft_putchar('-');
 					ft_strdel(&number);
 					number = ft_itoa(negdigit);
+					yesno++;
 				}
 				ft_putncaract('0', (flags.precision - ft_strlen(number)));
 				ft_putstr(number);
-				if (yesno)
-					return ((flags.width - flags.precision) + flags.space + (flags.precision - ft_strlen(number) + ft_strlen(number)));
-				return ((flags.precision - ft_strlen(number) + flags.space + ft_strlen(number)));
+				if (flags.width > flags.precision)
+					return ((flags.width - flags.precision) + flags.space + (flags.precision - ft_strlen(number)));
+				return ((flags.precision - ft_strlen(number) + flags.space + ft_strlen(number)) + yesno);
 			}
 			if (flags.precision < ft_strlen(number))
 			{
@@ -325,7 +348,8 @@ int		check_p_w_digit(int digit, t_flags flags)
 			else if ((!flags.point && (flags.width > ft_strlen(number))) || ((flags.point && (flags.width > ft_strlen(number))) && flags.zero))
 			{
 				ft_putncaract(' ', (flags.width - ft_strlen(number)));
-				return (flags.width - ft_strlen(number) + flags.space);
+				ft_putstr(number);
+				return (flags.width - ft_strlen(number) + flags.space + ft_strlen(number));
 			}
 			else
 			{
@@ -354,7 +378,10 @@ int		check_p_w_caract(int c, t_flags flags)
 		}
 		else
 		{
-			ft_putncaract(' ', (flags.width - 1));
+			if (flags.zero)
+				ft_putncaract('0', (flags.width - 1));
+			else
+				ft_putncaract(' ', (flags.width - 1));
 			ft_putchar(c);
 			return (flags.width);
 		}
@@ -464,7 +491,7 @@ int		parse(char *str, va_list va)
 		}
 	}
 	va_end(va);
-	return (nb + 1);
+	return (nb);
 }
 
 int		my_printf(const char *format, ...)
@@ -478,56 +505,5 @@ int		my_printf(const char *format, ...)
 
 int		main(void)
 {
-	my_printf("|1 %.12c 1|\n", 'w');
-	printf("|1 %.12c 1|\n", 'w');
-
-	my_printf("%d\n", my_printf("1caractere 1 %c caractere 2 %c\n", 'a', 'c'));
-	printf("%d\n\n", printf("1caractere 1 %c caractere 2 %c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("2caractere 1 %   c caractere 2 % c\n", 'a', 'c'));
-	printf("%d\n\n", printf("3caractere 1 %   c caractere 2 % c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("4caractere 1 %12c caractere 2 %12c\n", 'a', 'c'));
-	printf("%d\n\n", printf("4caractere 1 %12c caractere 2 %12c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("4caractere 1 %-12c caractere 2 %-12c\n", 'a', 'c'));
-	printf("%d\n\n", printf("4caractere 1 %-12c caractere 2 %-12c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("5caractere 1 %0c caractere 2 %0c\n", 'a', 'c'));
-	printf("%d\n\n", printf("5caractere 1 %0c caractere 2 %0c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("6caractere 1 %012c caractere 2 %012c\n", 'a', 'c'));
-	printf("%d\n\n", printf("6caractere 1 %012c caractere 2 %012c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("7caractere 1 %-012c caractere 2 %012c\n", 'a', 'c'));
-	printf("%d\n\n", printf("7caractere 1 %-012c caractere 2 %012c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("8caractere 1 %*c caractere 2 %*c\n", 'a', 6, 6, 6));
-	printf("%d\n\n", printf("8caractere 1 %*c caractere 2 %*c\n\n", 'a', 6, 6, 6));
-
-	my_printf("%d\n", my_printf("9caractere 1 %+c caractere 2 %+c\n", 'a', 6, 'c', 6));
-	printf("%d\n\n", printf("9caractere 1 %+c caractere 2 %+c\n\n", 'a', 6, 'c', 6));
-
-	my_printf("%d\n", my_printf("10caractere 1 %+12c caractere 2 %+12c\n", 'a', 6, 'c', 6));
-	printf("%d\n\n", printf("10caractere 1 %+12c caractere 2 %+12c\n\n", 'a', 6, 'c', 6));
-
-	my_printf("%d\n", my_printf("11caractere 1 %*12c caractere 2 %*12c\n", 'a', -6, 'a', 6));
-	printf("%d\n\n", printf("11caractere 1 %*12c caractere 2 %*12c\n\n", 'a', -6, 'a', 6));
-
-	my_printf("%d\n", my_printf("12caractere 1 %-+5c caractere 2 %-+5c\n", 'a', 'c'));
-	printf("%d\n\n", printf("12caractere 1 %-+5c caractere 2 %-+5c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("13caractere 1 %-+05c caractere 2 %-+05c\n", 'a', 'c'));
-	printf("%d\n\n", printf("13caractere 1 %-+05c caractere 2 %-+05c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("14caractere 1 %+-5c caractere 2 %+-5c\n", 'a', 'c'));
-	printf("%d\n\n", printf("14caractere 1 %+-5c caractere 2 %+-5c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("15caractere 1 %.c caractere 2 %.c\n", 'a', 'c'));
-	printf("%d\n\n", printf("15caractere 1 %.c caractere 2 %.c\n\n", 'a', 'c'));
-
-	my_printf("%d\n", my_printf("16caractere 1 %.6c caractere 2 %.6c\n", 'a', 'c'));
-	printf("%d\n\n", printf("16caractere 1 %.6c caractere 2 %.6c\n\n", 'a', 'c'));
-
 	return (0);
 }
