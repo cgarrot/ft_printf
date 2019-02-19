@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/18 15:31:20 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/19 14:32:08 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,17 +16,20 @@
 
 typedef struct	s_flags
 {
-	int		hashtag;
-	int		zero;
-	int		minus;
-	int		plus;
-	int		point;
-	int		space;
+	unsigned int		hashtag;
+	unsigned int		zero;
+	unsigned int		minus;
+	unsigned int		plus;
+	unsigned int		point;
+	unsigned int		space;
 	char	flag;
-	int		width;
-	int		precision;
-	int		forcent;
-	int		nb_caract;
+	unsigned int		width;
+	unsigned int		precision;
+	unsigned int		forcent;
+	unsigned int		_l;
+	unsigned int		_h;
+	unsigned int		_L;
+	unsigned int		nb_caract;
 }				t_flags;
 
 typedef struct	s_compt
@@ -43,6 +46,8 @@ typedef struct	s_args
 	char	*_s;
 	int		_d;
 	char	_c;
+	unsigned int _u;
+	unsigned int _x;
 }				t_args;
 
 #endif
