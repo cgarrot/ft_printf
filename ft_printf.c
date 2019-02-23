@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/11 18:54:54 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/19 15:10:25 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/02/23 00:02:06 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -314,9 +314,10 @@ int		check_p_w_digit(int digit, t_flags flags)
 			else
 			{
 				ft_putncaract(' ', (flags.width - ft_strlen(number)));
-				ft_putchar('+');
+				if (digit > 0)
+					ft_putchar('+');
 				ft_putstr(number);
-				return (ft_strlen(number) + flags.space + (flags.width - ft_strlen(number) - 1));
+				return (ft_strlen(number) + flags.space + (flags.width - ft_strlen(number)));
 			}
 		}
 		else
@@ -342,9 +343,11 @@ int		check_p_w_digit(int digit, t_flags flags)
 			if (flags.width > flags.precision)
 			{
 				ft_putncaract(' ', (flags.width - flags.precision - yesno));
+				//errot return +1
+				//if (flags.width )
 				return (ft_strlen(number) + flags.space + (flags.precision - ft_strlen(number) + (flags.width - flags.precision - yesno)));
 			}
-			return (ft_strlen(number) + flags.space + (flags.precision - ft_strlen(number)));
+			return (ft_strlen(number) + flags.space + (flags.precision - ft_strlen(number)) + yesno);
 		}
 		if (flags.precision < ft_strlen(number))
 		{
@@ -381,15 +384,20 @@ int		check_p_w_digit(int digit, t_flags flags)
 				ft_putncaract('0', (flags.precision - ft_strlen(number)));
 				ft_putstr(number);
 				if (flags.width > flags.precision)
-					return ((flags.width - flags.precision) + flags.space + (flags.precision - ft_strlen(number)));
+					return ((flags.width - flags.precision) + flags.space + (flags.precision - ft_strlen(number)) + yesno);
 				return ((flags.precision - ft_strlen(number) + flags.space + ft_strlen(number)) + yesno);
 			}
 			if (flags.precision < ft_strlen(number))
 			{
 				if (flags.precision < 1)
+				{
 					ft_putncaract(' ', (flags.width - ft_strlen(number)));
+					yesno++;
+				}
 				ft_putstr(number);
-				return ((flags.width - ft_strlen(number) + flags.space + ft_strlen(number)));
+				if (yesno)
+					return ((flags.width - ft_strlen(number) + flags.space + ft_strlen(number)));
+				return (ft_strlen(number));
 			}
 		}
 		else if (flags.width)
@@ -430,9 +438,9 @@ int		check_p_w_digit(int digit, t_flags flags)
 			if (digit != 0)
 			{
 				ft_putstr(number);
-				return (flags.space);
+				return (ft_strlen(number) + flags.space);
 			}
-			return (ft_strlen(number) + flags.space);
+			return (flags.space);
 		}
 	}
 	return (0);
@@ -674,7 +682,7 @@ int		parse(char *str, va_list va)
 				if (str[compt.j] == '-' && flags.minus < 1)
 					flags.minus++;
 				//if (str[compt.j] == '0' && (str[compt.j - 1] == '%' || str[compt.j - 1] == '+'))
-				if (str[compt.j] == '0' && flags.zero < 1)
+				if (str[compt.j] == '0' && flags.zero < 1 && !ft_isdigit(str[compt.j - 1]))
 					flags.zero++;
 				if (str[compt.j] == '.' && ((ft_isdigit(str[compt.j - 1]) || ft_isdigit(str[compt.j + 1])) || (str[compt.j - 1] == '%' && str[compt.j + 1] == 's')))
 				{
@@ -707,6 +715,7 @@ int		parse(char *str, va_list va)
 		}
 		//marche pas avec des espaces et crash avec un 1
 		//mettre dans les flags sinon les espaces ne marche pas
+		//printf("{%d}\n", nb);
 		flags.forcent = 0;
 		if (str[compt.i] == '%')
 		{
@@ -736,5 +745,80 @@ int		ft_printf(const char *format, ...)
 
 int		main(void)
 {
+	ft_printf("%s", "salut");
+/*
+	ft_printf("[%d]\n", ft_printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", -40, -20, -4, -120, -578, -9, -8));
+	printf("[%d]\n", printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", -40, -20, -4, -120, -578, -9, -8));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%1.5d| |%1.d| |%-5.d| |%-5.3d| |%+3.d| |%-.5d| |%.d|\n", -4, -2, -4, -1, -5, -9, -8));
+	printf("[%d]\n", printf("|%1.5d| |%1.d| |%-5.d| |%-5.3d| |%+3.d| |%-.5d| |%.d|\n", -4, -2, -4, -1, -5, -9, -8));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.d|\n", 0, 0, 0, 0, 0, 0, 0));
+	printf("[%d]\n", printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.d|\n", 0, 0, 0, 0, 0, 0, 0));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%10.d| |%-10.d| |%10.d| |%10.d| |%-10.d| |%5.d| |%-5.d|\n", 0, 0, 0, 0, 0, 0, 0));
+	printf("[%d]\n", printf("|%10.d| |%-10.d| |%10.d| |%10.d| |%-10.d| |%5.d| |%-5.d|\n", 0, 0, 0, 0, 0, 0, 0));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%1.d| |%2.d| |%3.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%1.d| |%2.d| |%3.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%-1.5d| |%+2.4d| |%-3.d| |%-1.d| |%-2.d| |%-3.1d| |%5.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%-1.5d| |%+2.4d| |%-3.d| |%-1.d| |%-2.d| |%-3.1d| |%5.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%1.0d| |%2.1d| |%3.0d| |%1.1d| |%2.0d| |%1.1d| |%1.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%1.0d| |%2.1d| |%3.0d| |%1.1d| |%2.0d| |%1.1d| |%1.2d|\n", 5, 5, 5, 5, 5, 5, 5));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%1.1d| |%2.0d| |%3.1d| |%1.0d| |%2.1d| |%1.0d| |%0.2d|\n", 15, 300, 140, 9, 7, 15488, 203));
+	printf("[%d]\n", printf("|%1.1d| |%2.0d| |%3.1d| |%1.0d| |%2.1d| |%1.0d| |%0.2d|\n", 15, 300, 140, 9, 7, 15488, 203));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%+1.1d| |%+2.0d| |%+3.1d| |%+1.0d| |%+2.1d| |%+1.0d| |%+0.2d|\n", 15, 300, 140, 9, 7, 15488, 203));
+	printf("[%d]\n", printf("|%+1.1d| |%+2.0d| |%+3.1d| |%+1.0d| |%+2.1d| |%+1.0d| |%+0.2d|\n", 15, 300, 140, 9, 7, 15488, 203));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|% 1.1d| |% 2.0d| |% 3.1d| |% 1.0d| |% 2.1d| |% 1.0d| |% 0.2d|\n", 15, 4, 3, 9, 7, 1, 0));
+	printf("[%d]\n", printf("|% 1.1d| |% 2.0d| |% 3.1d| |% 1.0d| |% 2.1d| |% 1.0d| |% 0.2d|\n", 15, 4, 3, 9, 7, 1, 0));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%+1.1d| |%+2.0d| |%+3.1d| |%+1.0d| |%+2.1d| |%+1.0d| |%+0.2d|\n", 15, 300, 140, 9, 7, 15488, 203));
+	printf("[%d]\n", printf("|%+1.1d| |%+2.0d| |%+3.1d| |%+1.0d| |%+2.1d| |%+1.0d| |%+0.2d|\n", 15, 300, 140, 9, 7, 15488, 203));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%1d| |%.10d| |%10d| |%-10d| |%+10d| |%+10.d| |%-10.d|\n", -4, -2, -4, -1, -5, -9, -8));
+	printf("[%d]\n", printf("|%1d| |%.10d| |%10d| |%-10d| |%+10d| |%+10.d| |%-10.d|\n", -4, -2, -4, -1, -5, -9, -8));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 2, 4, 1, 5, 9, 8));
+	printf("[%d]\n", printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 2, 4, 1, 5, 9, 8));
+
+	printf("\n");
+
+	ft_printf("[%d]\n", ft_printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
+	printf("[%d]\n", printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
+*/
 	return (0);
 }
