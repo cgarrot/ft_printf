@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/02/19 17:05:39 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/08 18:06:35 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -25,7 +25,7 @@ typedef struct	s_flags
 	char	flag;
 	unsigned int		width;
 	unsigned int		precision;
-	unsigned int		forcent;
+	unsigned int		percent;
 	unsigned int		_l;
 	unsigned int		_h;
 	unsigned int		_L;
@@ -37,6 +37,7 @@ typedef struct	s_compt
 	int		i;
 	int		j;
 	int		k;
+	int		m;
 	char	*num;
 	char	*num2;
 }				t_compt;
@@ -44,7 +45,7 @@ typedef struct	s_compt
 typedef struct	s_args
 {
 	char	*_s;
-	int		_d;
+	long long	_d;
 	char	_c;
 	unsigned int _u;
 	unsigned int _x;

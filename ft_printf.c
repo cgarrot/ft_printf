@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/11 18:54:54 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/07 18:19:06 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/08 19:29:10 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -220,6 +220,27 @@ int		check_p_w_str(char *str, t_flags flags)
 	return (ft_strlen(str));
 }
 
+char*	ft_lltoa_base(long long val, int base)
+{
+	static char buf[64] = {0};
+	int i = 62;
+	int sign = (val < 0);
+	
+	if (sign)
+		val = -val;
+	if (val == 0)
+		return ("0");
+	while (val && i)
+	{
+		buf[i] = "0123456789abcdef"[val % base];
+		val /= base;
+		--i;
+	}
+	if (sign)
+		buf[i--] = '-';
+	return (&buf[i + 1]);
+}
+
 int		check_p_w_digit(long long digit, t_flags flags)
 {
 	char	*number;
@@ -234,7 +255,10 @@ int		check_p_w_digit(long long digit, t_flags flags)
 	negdigit = digit;
 	if (digit < 0)
 		negdigit = -digit;
-	number = ft_itoa(digit);
+	if (flags._l)
+		number = ft_lltoa_base(digit, 10);
+	if (!flags._l)
+		number = ft_itoa(digit);
 	if (((flags.space && (digit >= 0) && !flags.plus)) && ((1 < ft_strlen(number)) || flags.precision > ft_strlen(number)))
 		ft_putchar(' ');
 	else if (flags.space)
@@ -685,8 +709,19 @@ int		parse(char *str, va_list va)
 			ft_putchar(str[compt.i]);
 			nb++;
 		}
-		//not print %%
-		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' && str[compt.i + 1] != '\0' && str[compt.i - 1] != '%'))
+		compt.m = 0;
+		if (str[compt.i] == '%' && str[compt.i + 1] == '%')
+		{
+			while (str[compt.i] == '%')
+			{
+				compt.i++;
+				compt.m++;
+			}
+			ft_putncaract('%', (compt.m  / 2));
+			nb += compt.m  / 2;
+			compt.i--;
+		}
+		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' && str[compt.i + 1] != '\0'))
 		{
 			compt.j = compt.i;
 			compt.k = 0;
@@ -719,8 +754,8 @@ int		parse(char *str, va_list va)
 					flags._L++;
 				//printf("%c", str[compt.j]);
 			}
-			if (str[compt.j - 2] == 'l' || str[compt.j - 2] == 'h')
-				return (0);
+			if (str[compt.j - 1] == '%')
+				printf("yolo");
 			flags.flag = str[compt.j - 1];
 			if (!(compt.num = ft_strsub(str, compt.i, (compt.j - compt.i))))
 				return (0);
@@ -733,23 +768,7 @@ int		parse(char *str, va_list va)
 			nb = chose_flag(flags, va, nb);
 			//print_help(flags, compt, str);
 		}
-		//marche pas avec des espaces et crash avec un 1
-		//mettre dans les flags sinon les espaces ne marche pas
 		//printf("{%d}\n", nb);
-		flags.forcent = 0;
-		if (str[compt.i] == '%')
-		{
-			while (str[compt.i] == '%')
-			{
-				flags.forcent++;
-				compt.i++;
-			}
-			if (flags.forcent % 2 == 0)
-				ft_putncaract('%', (flags.forcent / 2));
-			else
-				ft_putncaract('%', ((flags.forcent + 1) / 2));
-			compt.i--;
-		}
 	}
 	va_end(va);
 	return (nb);
@@ -765,7 +784,6 @@ int		ft_printf(const char *format, ...)
 
 int		main(void)
 {
-
 printf("---- Digit ----\n\n");
 
 	ft_printf("[%d]\n", ft_printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", 5, 5, 5, 5, 5, 5, 5));
@@ -840,9 +858,9 @@ printf("---- Digit ----\n\n");
 
 	ft_printf("[%d]\n", ft_printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
 	printf("[%d]\n", printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
-/*	
+	
 	printf("\n");
-
+/*
 	// --- U
 	printf("---- Unsigned --- \n\n");
 	
@@ -1040,7 +1058,7 @@ printf("---- Digit ----\n\n");
 	printf("|%10.lo| |%-10.o| |%10.o| |%10.o| |%-10.o| |%5.o| |%-5.o|\n", 4, 2, 4, 1, 5, 9, 8);
 	
 	printf("\n");
-	*/
+*/
 	// --- S
 	
 	printf("---- Chaines de chararacteres ----\n\n");
