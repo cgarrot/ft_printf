@@ -6,7 +6,7 @@
 #    By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/10/10 19:59:22 by cgarrot      #+#   ##    ##    #+#        #
-#    Updated: 2018/11/11 18:54:58 by cgarrot     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/03/19 11:41:25 by cgarrot     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -77,7 +77,10 @@ $(NAME): $(SRC) $(INC) ./libft/
 	@printf $(RED)"|_/ \n"
 	@printf $(W)"          \_/__\_/                                            \_/__\_/ \n"
 	@+make -C libft/
-	@$(CC) $(FLAGS) -o $(NAME) $(SRC) -I $(INC) -L libft/ -lft
+	@ar rcs $(NAME) $(OBJ)
+
+%.o: %.c $(INC)
+	@$(CC) -o $@ -c $< -I $(INC)
 
 clean:
 	@rm -f $(OBJ)

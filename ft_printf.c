@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/11 18:54:54 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/08 19:29:10 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/19 12:09:48 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -220,46 +220,29 @@ int		check_p_w_str(char *str, t_flags flags)
 	return (ft_strlen(str));
 }
 
-char*	ft_lltoa_base(long long val, int base)
-{
-	static char buf[64] = {0};
-	int i = 62;
-	int sign = (val < 0);
-	
-	if (sign)
-		val = -val;
-	if (val == 0)
-		return ("0");
-	while (val && i)
-	{
-		buf[i] = "0123456789abcdef"[val % base];
-		val /= base;
-		--i;
-	}
-	if (sign)
-		buf[i--] = '-';
-	return (&buf[i + 1]);
-}
-
 int		check_p_w_digit(long long digit, t_flags flags)
 {
 	char	*number;
 	int		yesno;
-	int		negdigit;
+	int		unsplus;
+	long long		negdigit;
 	int		space2;
 	int		space3;
 
 	yesno = 0;
 	space2 = 0;
 	space3 = 0;
+	unsplus = 1;
 	negdigit = digit;
-	if (digit < 0)
+	if (flags.flag == 'u')
+		flags.plus = 0;
+	if (digit < 0 && flags.flag != 'u')
 		negdigit = -digit;
 	if (flags._l)
-		number = ft_lltoa_base(digit, 10);
+		number = ft_lltoa(digit);
 	if (!flags._l)
 		number = ft_itoa(digit);
-	if (((flags.space && (digit >= 0) && !flags.plus)) && ((1 < ft_strlen(number)) || flags.precision > ft_strlen(number)))
+	if (((flags.space && (digit >= 0) && !flags.plus)) && ((1 < ft_strlen(number)) || flags.precision > ft_strlen(number)) && flags.flag != 'u')
 		ft_putchar(' ');
 	else if (flags.space)
 	{
@@ -281,8 +264,8 @@ int		check_p_w_digit(long long digit, t_flags flags)
 				ft_putncaract('0', (flags.precision - ft_strlen(number)));
 				ft_putstr(number);
 				if (yesno)
-					return (ft_strlen(number) + flags.space + 1 + (flags.precision - ft_strlen(number)) + (flags.width - flags.precision - 1));
-				return (ft_strlen(number) + 1 + (flags.precision - ft_strlen(number)));
+					return (ft_strlen(number) + flags.space + unsplus + (flags.precision - ft_strlen(number)) + (flags.width - flags.precision - 1));
+				return (ft_strlen(number) + unsplus + (flags.precision - ft_strlen(number)));
 			}
 			else if (flags.precision < ft_strlen(number))
 			{
@@ -378,7 +361,10 @@ int		check_p_w_digit(long long digit, t_flags flags)
 			{
 				ft_putchar('-');
 				ft_strdel(&number);
-				number = ft_itoa(negdigit);
+				if (!flags._l)
+					number = ft_itoa(negdigit);
+				if (flags._l)
+					number = ft_lltoa(negdigit);
 				yesno++;
 			}
 			ft_putncaract('0', (flags.precision - ft_strlen(number)));
@@ -419,7 +405,10 @@ int		check_p_w_digit(long long digit, t_flags flags)
 				{
 					ft_putchar('-');
 					ft_strdel(&number);
-					number = ft_itoa(negdigit);
+					if (!flags._l)
+						number = ft_itoa(negdigit);
+					if (flags._l)
+						number = ft_lltoa(negdigit);
 					yesno++;
 				}
 				ft_putncaract('0', (flags.precision - ft_strlen(number)));
@@ -449,7 +438,10 @@ int		check_p_w_digit(long long digit, t_flags flags)
 				{
 					ft_putchar('-');
 					ft_strdel(&number);
-					number = ft_itoa(negdigit);
+					if (!flags._l)
+						number = ft_itoa(negdigit);
+					if (flags._l)
+						number = ft_lltoa(negdigit);
 					yesno++;
 				}
 				ft_putncaract('0', (flags.width - ft_strlen(number) - yesno));
@@ -482,6 +474,11 @@ int		check_p_w_digit(long long digit, t_flags flags)
 			{
 				ft_putstr(number);
 				return (ft_strlen(number) + flags.space);
+			}
+			if (digit == 0)
+			{
+				ft_putchar('0');
+				return (1);
 			}
 			return (flags.space);
 		}
@@ -666,10 +663,28 @@ int		chose_flag(t_flags flags, va_list va, int nb)
 		nb += check_p_w_str(args._s, flags);
 
 	}
-	if (flags.flag == 'd')
+	if (flags.flag == 'd' || flags.flag == 'u')
 	{
-		args._d = va_arg(va, long long);
-		nb += check_p_w_digit(args._d, flags);
+		if (flags._l && flags.flag == 'u')
+		{
+			args._lu = va_arg(va, unsigned long long);
+			nb += check_p_w_digit(args._lu, flags);
+		}
+		else if (flags.flag == 'u')
+		{
+			args._u = va_arg(va, unsigned int);
+			nb += check_p_w_digit(args._u, flags);
+		}
+		else if (flags._l && flags.flag == 'd')
+		{
+			args._ld = va_arg(va, long long);
+			nb += check_p_w_digit(args._ld, flags);
+		}
+		else
+		{
+			args._d = va_arg(va, int);
+			nb += check_p_w_digit(args._d, flags);
+		}
 	}
 	if (flags.flag == 'c')
 	{
@@ -689,10 +704,6 @@ int		chose_flag(t_flags flags, va_list va, int nb)
 	return (nb);
 }
 
-/*int		check_p_w_unsidigit(unsigned int udigi, t_flags flags)
-  {
-  return (0);
-  }*/
 
 int		parse(char *str, va_list va)
 {
@@ -754,8 +765,6 @@ int		parse(char *str, va_list va)
 					flags._L++;
 				//printf("%c", str[compt.j]);
 			}
-			if (str[compt.j - 1] == '%')
-				printf("yolo");
 			flags.flag = str[compt.j - 1];
 			if (!(compt.num = ft_strsub(str, compt.i, (compt.j - compt.i))))
 				return (0);
@@ -784,16 +793,22 @@ int		ft_printf(const char *format, ...)
 
 int		main(void)
 {
+	ft_printf("%d", 0);
+	return(0);
+}
+/*
+int		main(void)
+{
+	
 printf("---- Digit ----\n\n");
 
 	ft_printf("[%d]\n", ft_printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", 5, 5, 5, 5, 5, 5, 5));
 	printf("[%d]\n", printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", 5, 5, 5, 5, 5, 5, 5));
 
 	printf("\n");
-
 	ft_printf("[%d]\n", ft_printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", -40, -20, -4, -120, -578, -9, -8));
 	printf("[%d]\n", printf("|%01.d| |%02.d| |%03.d| |%1.d| |%2.d| |%.1d| |%.2d|\n", -40, -20, -4, -120, -578, -9, -8));
-	
+
 	printf("\n");
 
 	ft_printf("[%d]\n", ft_printf("|%1.5d| |%1.d| |%-5.d| |%-5.3d| |%+3.d| |%-.5d| |%.d|\n", -4, -2, -4, -1, -5, -9, -8));
@@ -856,82 +871,78 @@ printf("---- Digit ----\n\n");
 	
 	printf("\n");
 
-	ft_printf("[%d]\n", ft_printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
-	printf("[%d]\n", printf("|%-.10d| |%+.10d| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
-	
+	ft_printf("[%d]\n", ft_printf("|%-.10ld| |%+.10ld| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
+	printf("[%d]\n", printf("|%-.10ld| |%+.10ld| |% .10d| |%- .5d| |%+ .5d| |%+ .10d|\n", 0, 0, 0, 0, 0, 0));
+
 	printf("\n");
-/*
 	// --- U
 	printf("---- Unsigned --- \n\n");
 	
-	ft_printf("|%10x|\n", 42);
-	printf("|%10x|\n", 42);
-
 	printf("\n");
 
-	ft_printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", 5, 5, 5, 5, 5, 5, 5);
-	printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", 5, 5, 5, 5, 5, 5, 5);
+	ft_printf("[%d]\n", ft_printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", 5, 5, 5, 5, 5, 5, 5));
 
 
 	printf("\n");
 
-	ft_printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", -40, -20, -4, -120, -578, -9, -8);
-	printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", -40, -20, -4, -120, -578, -9, -8);
+	ft_printf("[%d]\n", ft_printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", -40, -20, -4, -120, -578, -9, -8));
+	printf("[%d]\n", printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.2u|\n", -40, -20, -4, -120, -578, -9, -8));
 	
 	printf("\n");
 
-	ft_printf("|%1.5u| |%1.u| |%-5.u| |%-5.3u| |%+3.u| |%-.5u| |%8.3u|\n", -4, -2, -4, -1, -5, -9, -8);
-	printf("|%1.5u| |%1.u| |%-5.u| |%-5.3u| |%+3.u| |%-.5u| |%8.3u|\n", -4, -2, -4, -1, -5, -9, -8);
+	ft_printf("[%d]\n", ft_printf("|%1.5u| |%1.u| |%-5.u| |%-5.3u| |%+3.u| |%-.5u| |%8.3u|\n", -4, -2, -4, -1, -5, -9, -8));
+	printf("[%d]\n", printf("|%1.5u| |%1.u| |%-5.u| |%-5.3u| |%+3.u| |%-.5u| |%8.3u|\n", -4, -2, -4, -1, -5, -9, -8));
 
 	printf("\n");
 
-	ft_printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 0, 0, 0, 0, 0, 0, 0);
-	printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 0, 0, 0, 0, 0, 0, 0);
+	ft_printf("[%d]\n", ft_printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 0, 0, 0, 0, 0, 0, 0));
+	printf("[%d]\n", printf("|%01.u| |%02.u| |%03.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 0, 0, 0, 0, 0, 0, 0));
 
 	printf("\n");
 	
-	ft_printf("|%10.u| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 0, 0, 0, 0, 0, 0, 0);
-	printf("|%10.u| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 0, 0, 0, 0, 0, 0, 0);
+	ft_printf("[%d]\n", ft_printf("|%10.u| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 0, 0, 0, 0, 0, 0, 0));
+	printf("[%d]\n", printf("|%10.u| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 0, 0, 0, 0, 0, 0, 0));
 	
 	printf("\n");
 
-	ft_printf("|%1.u| |%2.u| |%3.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 5, 5, 5, 5, 5, 5, 5);
-	printf("|%1.u| |%2.u| |%3.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 5, 5, 5, 5, 5, 5, 5);
+	ft_printf("[%d]\n", ft_printf("|%1.u| |%2.u| |%3.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%1.u| |%2.u| |%3.u| |%1.u| |%2.u| |%.1u| |%.u|\n", 5, 5, 5, 5, 5, 5, 5));
 
 	printf("\n");
 
-	ft_printf("|%-1.5u| |%+2.4u| |%-3.u| |%-1.u| |%-2.u| |%-3.1u| |%5.2u|\n", 5, 5, 5, 5, 5, 5, 5);
-	printf("|%-1.5u| |%+2.4u| |%-3.u| |%-1.u| |%-2.u| |%-3.1u| |%5.2u|\n", 5, 5, 5, 5, 5, 5, 5);
+	ft_printf("[%d]\n", ft_printf("|%-1.5u| |%+2.4u| |%-3.u| |%-1.u| |%-2.u| |%-3.1u| |%5.2u|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%-1.5u| |%+2.4u| |%-3.u| |%-1.u| |%-2.u| |%-3.1u| |%5.2u|\n", 5, 5, 5, 5, 5, 5, 5));
 
 	printf("\n");
 
-	ft_printf("|%1.0u| |%2.1u| |%3.0u| |%1.1u| |%2.0u| |%1.1u| |%1.2u|\n", 5, 5, 5, 5, 5, 5, 5);
-	printf("|%1.0u| |%2.1u| |%3.0u| |%1.1u| |%2.0u| |%1.1u| |%1.2u|\n", 5, 5, 5, 5, 5, 5, 5);
+	ft_printf("[%d]\n", ft_printf("|%1.0u| |%2.1u| |%3.0u| |%1.1u| |%2.0u| |%1.1u| |%1.2u|\n", 5, 5, 5, 5, 5, 5, 5));
+	printf("[%d]\n", printf("|%1.0u| |%2.1u| |%3.0u| |%1.1u| |%2.0u| |%1.1u| |%1.2u|\n", 5, 5, 5, 5, 5, 5, 5));
 	
 	printf("\n");
 
-	ft_printf("|%1.1u| |%2.0u| |%3.1u| |%1.0u| |%2.1u| |%1.0u| |%0.2u|\n", 15, 300, 140, 9, 7, 15488, 203);
-	printf("|%1.1u| |%2.0u| |%3.1u| |%1.0u| |%2.1u| |%1.0u| |%0.2u|\n", 15, 300, 140, 9, 7, 15488, 203);
+	ft_printf("[%d]\n", ft_printf("|%1.1u| |%2.0u| |%3.1u| |%1.0u| |%2.1u| |%1.0u| |%0.2u|\n", 15, 300, 140, 9, 7, 15488, 203));
+	printf("[%d]\n", printf("|%1.1u| |%2.0u| |%3.1u| |%1.0u| |%2.1u| |%1.0u| |%0.2u|\n", 15, 300, 140, 9, 7, 15488, 203));
 	
 	printf("\n");
 
-	ft_printf("|%1u| |%.10u| |%10u| |%-10u| |%+10u| |%+10.u| |%-10.u|\n", -4, -2, -4, -1, -5, -9, -8);
-	printf("|%1u| |%.10u| |%10u| |%-10u| |%+10u| |%+10.u| |%-10.u|\n", -4, -2, -4, -1, -5, -9, -8);
+	ft_printf("[%d]\n", ft_printf("|%1u| |%.10u| |%10u| |%-10u| |%+10u| |%+10.u| |%-10.u|\n", -4, -2, -4, -1, -5, -9, -8));
+	printf("[%d]\n",printf("|%1u| |%.10u| |%10u| |%-10u| |%+10u| |%+10.u| |%-10.u|\n", -4, -2, -4, -1, -5, -9, -8));
 
 	printf("\n");
 
-	ft_printf("|% .10lu| |%-.10u| |%+.10u| |% .10u| |%- .5u| |%+ .5u| |%+ .10u|\n", 4, 2, 4, 1, 5, 9, 8);
-	printf("|% .10lu| |%-.10u| |%+.10u| |% .10u| |%- .5u| |%+ .5u| |%+ .10u|\n", 4, 2, 4, 1, 5, 9, 8);
+	ft_printf("[%d]\n", ft_printf("|% .10lu| |%-.10u| |%+.10u| |% .10u| |%- .5u| |%+ .5u| |%+ .10u|\n", 4, 2, 4, 1, 5, 9, 8));
+	printf("[%d]\n", printf("|% .10lu| |%-.10u| |%+.10u| |% .10u| |%- .5u| |%+ .5u| |%+ .10u|\n", 4, 2, 4, 1, 5, 9, 8));
 	
 	printf("\n");
 
-	ft_printf("|%.10lu| |%-.10u| |%+.10u| |%.10u| |%-.5u| |%+.5u| |%+.10u|\n", 0, 0, 0, 0, 0, 0, 0);
-	printf("|%.10lu| |%-.10u| |%+.10u| |%.10u| |%-.5u| |%+.5u| |%+.10u|\n", 0, 0, 0, 0, 0, 0, 0);
+	ft_printf("[%d]\n", ft_printf("|%.10lu| |%-.10u| |%+.10u| |%.10u| |%-.5u| |%+.5u| |%+.10u|\n", 0, 0, 0, 0, 0, 0, 0));
+	printf("[%d]\n", printf("|%.10lu| |%-.10u| |%+.10u| |%.10u| |%-.5u| |%+.5u| |%+.10u|\n", 0, 0, 0, 0, 0, 0, 0));
 
 	printf("\n");
 
-	ft_printf("|%10.lu| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 4, 2, 4, 1, 5, 9, 8);
-	printf("|%10.lu| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 4, 2, 4, 1, 5, 9, 8);
+	ft_printf("[%d]\n", ft_printf("|%10.lu| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 4, 2, 4, 1, 5, 9, 8));
+	printf("[%d]\n", printf("|%10.lu| |%-10.u| |%10.u| |%10.u| |%-10.u| |%5.u| |%-5.u|\n", 4, 2, 4, 1, 5, 9, 8));
 	
 	printf("\n");
 
@@ -1058,7 +1069,7 @@ printf("---- Digit ----\n\n");
 	printf("|%10.lo| |%-10.o| |%10.o| |%10.o| |%-10.o| |%5.o| |%-5.o|\n", 4, 2, 4, 1, 5, 9, 8);
 	
 	printf("\n");
-*/
+
 	// --- S
 	
 	printf("---- Chaines de chararacteres ----\n\n");
@@ -1170,7 +1181,7 @@ printf("---- Digit ----\n\n");
 
 	ft_printf("[%d]\n", ft_printf("|%1c| |%.10c| |%10c| |%-10c| |%+10c| |%+10.c| |%-10.c|\n", 0, 0, 0, 0, 0, 0, 0));
 	printf("[%d]\n", printf("|%1c| |%.10c| |%10c| |%-10c| |%+10c| |%+10.c| |%-10.c|\n", 0, 0, 0, 0, 0, 0, 0));
-/*
+
 	// --- P
 	printf("---- Pointers ----\n\n");
 	ft_printf("|%01.p| |%02.p| |%03.p| |%1.p| |%2.p| |%.1p| |%.2p|\n", "aa", "bb", "cc", "dd", "ee", "ff", "dd");
@@ -1216,6 +1227,5 @@ printf("---- Digit ----\n\n");
 	
 	ft_printf("|%10.p| |%-10.p| |%10.p| |%10.p| |%-10.p| |%5.p| |%-5.p|\n",  4, 5, 8, 6, 2, 1, 9);
 	printf("|%10.p| |%-10.p| |%10.p| |%10.p| |%-10.p| |%5.p| |%-5.p|\n", 4, 5, 8, 6, 2, 1, 9);
-	*/
 	return (0);
-}
+}*/

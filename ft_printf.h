@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/08 18:06:35 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/03/19 11:38:04 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,11 +44,13 @@ typedef struct	s_compt
 
 typedef struct	s_args
 {
-	char	*_s;
-	long long	_d;
-	char	_c;
-	unsigned int _u;
-	unsigned int _x;
+	char				*_s;
+	int					_d;
+	long long			_ld;
+	char				_c;
+	unsigned int		_u;
+	unsigned long long	_lu;
+	unsigned int		_x;
 }				t_args;
 
 #endif
