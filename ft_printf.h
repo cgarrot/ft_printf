@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/28 16:26:23 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/11 16:50:08 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,6 +15,7 @@
 # define FT_PRINTF_H
 
 # include "libft/libft.h"
+# include <stdarg.h>
 
 typedef struct	s_flags
 {
@@ -36,12 +37,12 @@ typedef struct	s_flags
 
 typedef struct	s_compt
 {
-	int		i;
-	int		j;
-	int		k;
-	int		m;
-	char	*num;
-	char	*num2;
+	int					i;
+	int					j;
+	int					k;
+	int					m;
+	char				*num;
+	char				*num2;
 }				t_compt;
 
 typedef struct	s_args
@@ -55,6 +56,65 @@ typedef struct	s_args
 	long long			_x;
 	unsigned long		_o;
 	void				*_p;
+	double				_f;
 }				t_args;
+
+typedef struct s_check_str
+{
+	unsigned int		precision;
+	unsigned int		width;
+	unsigned int		minus;
+	unsigned int		zero;
+	int					size;
+	char				*str;
+}				t_check_str;
+
+//parse
+int				chose_flag(t_flags flags, va_list va, int nb);
+int				parse(char *str, va_list va);
+
+//init
+t_check_str		init_str(t_flags flags, int size, char *str);
+t_flags			init(t_flags flags);
+
+//utils
+int				ft_isflags(char c);
+int				ft_atoi_2(char const *str);
+char			*ft_strrev(char *str);
+void			ft_putnstr(char const *s, int size);
+void			ft_putncaract(char c, int size);
+char			*ft_strcapitalize(char *str);
+
+//utils octa hexa
+char			*dectoocta(unsigned long n, t_flags flags);
+void			ft_putstro(char *str, t_flags flags);
+char			*dectohexa(long long n);
+void			ft_putstrx(char *str, t_flags flags);
+void			ft_puthash(t_flags flags);
+
+//%s
+int				precision_width_str(t_check_str c_str);
+int				is_precision_str(t_check_str c_str);
+int				is_width_str(t_check_str c_str);
+int				is_width_no_precision_other_str(t_check_str c_str, int chose);
+int				check_p_w_str(char *str, t_flags flags);
+
+//%d
+int				check_p_w_digit(long long digit, t_flags flags);
+
+//%c
+int				check_p_w_caract(int c, t_flags flags);
+
+//%o
+int				check_p_w_octa(unsigned long dec, t_flags flags);
+
+//%x
+int				check_p_w_hexa(unsigned long long dec, t_flags flags);
+
+//%p
+int				check_p_w_ptr(void *ptr, t_flags flags);
+
+int				ft_printf(const char *format,
+			...) __attribute__((format(printf,1,2)));
 
 #endif
