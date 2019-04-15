@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:42 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 16:03:06 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 16:42:43 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -126,7 +126,7 @@ int		check_p_w_hexa(unsigned long long dec, t_flags flags)
 					ft_puthash(flags);
 					surplus = 2;
 				}
-				if (dec != 0)
+				if (dec != 0 || (flags.flag == 'p' && dec == 0))
 					ft_putstrx(str, flags);
 			}
 			if (flags.flag == 'p' && flags.minus && flags.width <= ft_strlen(str))
