@@ -6,12 +6,12 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:45:53 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/11 16:49:30 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 16:03:30 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/ft_printf.h"
 #include <stdio.h>
 
 void	print_help(t_flags flags, t_compt compt, char *str)

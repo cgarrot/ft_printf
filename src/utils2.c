@@ -1,39 +1,28 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   check_caract.c                                   .::    .:/ .      .::   */
+/*   utils2.c                                         .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/04/11 16:44:14 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/11 16:46:58 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Created: 2019/04/11 16:30:47 by cgarrot      #+#   ##    ##    #+#       */
+/*   Updated: 2019/04/15 16:03:32 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/ft_printf.h"
 
-int		check_p_w_caract(int c, t_flags flags)
+char	*ft_strcapitalize(char *str)
 {
-	if (flags.width)
+	int i;
+
+	i = 0;
+	while (str[i])
 	{
-		if (flags.minus)
-		{
-			ft_putchar(c);
-			ft_putncaract(' ', (flags.width - 1));
-			return (flags.width);
-		}
-		else
-		{
-			if (flags.zero)
-				ft_putncaract('0', (flags.width - 1));
-			else
-				ft_putncaract(' ', (flags.width - 1));
-			ft_putchar(c);
-			return (flags.width);
-		}
+		if (str[i] > 96 && str[i] < 123)
+			str[i] = str[i] - 32;
+		i++;
 	}
-	else
-		ft_putchar(c);
-	return (1);
+	return (str);
 }

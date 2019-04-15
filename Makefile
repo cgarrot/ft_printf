@@ -6,87 +6,35 @@
 #    By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/10/10 19:59:22 by cgarrot      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/15 16:06:59 by cgarrot     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/15 16:34:33 by cgarrot     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
 
 .PHONY: all clean fclean re
 
-NAME = libft.a
+NAME = libftprintf.a
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
-INC = libft.h
+INC = /includes/ft_printf.h
+TEST = ft_printf.out
+HEADER = include
 
 #------------------------------------FILE--------------------------------------#
 
-FILES = ft_atoi\
-		ft_bzero\
-		ft_isalnum\
-		ft_isalpha\
-		ft_isascii\
-		ft_isdigit\
-		ft_isprint\
-		ft_itoa\
-		ft_memalloc\
-		ft_memccpy\
-		ft_memchr\
-		ft_memcmp\
-		ft_memcpy\
-		ft_memdel\
-		ft_memmove\
-		ft_memset\
-		ft_putchar\
-		ft_putchar_fd\
-		ft_putendl\
-		ft_putendl_fd\
-		ft_putnbr\
-		ft_putnbr_fd\
-		ft_putstr\
-		ft_putstr_fd\
-		ft_strcat\
-		ft_strchr\
-		ft_strclr\
-		ft_strcmp\
-		ft_strcpy\
-		ft_strdel\
-		ft_strdup\
-		ft_strequ\
-		ft_striter\
-		ft_striteri\
-		ft_strjoin\
-		ft_strlcat\
-		ft_strlen\
-		ft_strmap\
-		ft_strmapi\
-		ft_strncat\
-		ft_strncmp\
-		ft_strncpy\
-		ft_strnequ\
-		ft_strnew\
-		ft_strnstr\
-		ft_strrchr\
-		ft_strsplit\
-		ft_strstr\
-		ft_strsub\
-		ft_strtrim\
-		ft_tolower\
-		ft_toupper\
-		ft_lstnew\
-		ft_lstdelone\
-		ft_lstdel\
-		ft_lstadd\
-		ft_lstiter\
-		ft_lstmap\
-		ft_strndup\
-		ft_swap\
-		ft_lltoa\
-		ft_ulltoa\
-		ft_utoa\
-		ft_uhhtoa\
-		ft_uhtoa\
-		ft_htoa\
-		ft_hhtoa\
+FILES = src/check_caract\
+		src/check_digit\
+		src/check_hexa\
+		src/check_octa\
+		src/check_pointer\
+		src/check_str\
+		src/conversion\
+		src/ft_printf\
+		src/init\
+		src/parse\
+		src/utils1\
+		src/utils2\
+		src/utils_octa_hexa\
 
 #----------------------------------COLOR---------------------------------------#
 
@@ -126,16 +74,16 @@ $(NAME): $(OBJ)
 	@printf $(YELLOW)"/\ "
 	@printf $(RED)"       "
 	@printf $(W)"(@) (@)\n"
-	@printf $(RED)"  /                   |      "
-	@printf $(PURPLE)"cgarrot"
-	@printf $(RED)"        |                |           "
+	@printf $(RED)"  /                   | "
+	@printf $(PURPLE)"cgarrot && seanseau"
+	@printf $(RED)" |                |           "
 	@printf $(YELLOW)"\/"
 	@printf $(RED)"\     "
 	@printf $(W)"(@) (@)\n"
 	@printf $(RED)" /"
 	@printf $(YELLOW)"<>"
-	@printf $(RED)"      ________    |           "
-	@printf $(PURPLE)"Libft"
+	@printf $(RED)"      ________    |       "
+	@printf $(PURPLE)"ft_printf"
 	@printf $(RED)"     |                |________      \     "
 	@printf $(W)"(@)\n"
 	@printf $(RED)" |      /  "
@@ -156,22 +104,28 @@ $(NAME): $(OBJ)
 	@printf $(W)"|   ()   | "
 	@printf $(RED)"|_/ \n"
 	@printf $(W)"          \_/__\_/                                            \_/__\_/ \n"
+	@make -C libft/
+	@cp libft/libft.a ./$(NAME)
 	@ar rcs $(NAME) $(OBJ)
+	@ranlib $(NAME)
 
-%.o: %.c $(INC)
-	@$(CC) $(FLAGS) -o $@ -c $< -I $(INC)
+object/%.o: src/%.c
+	@mkdir -p obj
+	@$(CC) $(FLAGS) -I $(HEADER) -o $@ -c $<
 
 clean:
 	@echo "\033[1m|---------------------------------|\033[0m"
 	@echo "\033[1m|-------Supprimer les OBJECT------|\033[0m"
 	@echo "\033[1m|---------------------------------|\033[0m"
 	@rm -f $(OBJ)
+	@make clean -C libft/
 
 fclean: clean
 	@echo "\n"
-	@echo "\033[1m|---------------------------------|\033[0m"
-	@echo "\033[1m|-------Supprimer la libft.a------|\033[0m"
-	@echo "\033[1m|---------------------------------|\033[0m"
-	@rm -f $(NAME) 
+	@echo "\033[1m|---------------------------------------|\033[0m"
+	@echo "\033[1m|-------Supprimer la libftprintf.a------|\033[0m"
+	@echo "\033[1m|---------------------------------------|\033[0m"
+	@rm -f $(NAME)
+	@make fclean -C libft/
 
 re: fclean all

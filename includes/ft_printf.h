@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/11 16:50:08 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 16:04:05 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -14,7 +14,7 @@
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <stdarg.h>
 
 typedef struct	s_flags

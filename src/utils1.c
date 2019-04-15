@@ -6,12 +6,12 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:07:47 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/11 16:15:09 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 16:03:31 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/ft_printf.h"
 
 int		ft_isflags(char c)
 {

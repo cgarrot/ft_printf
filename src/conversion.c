@@ -6,12 +6,12 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:33:57 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/11 16:34:55 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 16:04:31 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../includes/ft_printf.h"
 
 int		chose_flag(t_flags flags, va_list va, int nb)
 {
@@ -65,10 +65,11 @@ int		chose_flag(t_flags flags, va_list va, int nb)
 		args._o = va_arg(va, unsigned long);
 		nb += check_p_w_octa(args._o, flags);
 	}
+	/*
 	if (flags.flag == 'f')
 	{
 		args._f = va_arg(va, double);
 		nb += check_p_w_float(args._f, flags);
-	}
+	}*/
 	return (nb);
 }
