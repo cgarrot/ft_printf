@@ -6,14 +6,14 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:04:59 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 16:03:27 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 18:29:07 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-t_flags		init(t_flags flags)
+t_flags			init(t_flags flags)
 {
 	flags.hashtag = 0;
 	flags.plus = 0;

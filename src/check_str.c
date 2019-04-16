@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 15:55:34 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 16:03:20 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/15 18:28:19 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -46,7 +46,7 @@ int		is_precision_str(t_check_str c_str)
 	if (c_str.precision < ft_strlen(c_str.str))
 	{
 		if (c_str.width)
-			return(precision_width_str(c_str));
+			return (precision_width_str(c_str));
 		else
 			ft_putnstr(c_str.str, c_str.precision);
 		return (c_str.precision);
@@ -126,7 +126,7 @@ int		check_p_w_str(char *str, t_flags flags)
 	if (flags.point && (!flags.precision && !flags.width))
 		return (0);
 	else if (flags.precision)
-		return(is_precision_str(init_str(flags, size, str)));
+		return (is_precision_str(init_str(flags, size, str)));
 	else if (flags.point && !flags.precision)
 		return (is_width_no_precision_other_str(init_str(flags, size, str), 1));
 	else if (flags.width)

@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 16:04:05 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 09:57:42 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -25,7 +25,7 @@ typedef struct	s_flags
 	unsigned int		plus;
 	unsigned int		point;
 	unsigned int		space;
-	char	flag;
+	char				flag;
 	unsigned int		width;
 	unsigned int		precision;
 	unsigned int		percent;
@@ -33,14 +33,15 @@ typedef struct	s_flags
 	unsigned int		_h;
 	unsigned int		_L;
 	unsigned int		nb_caract;
+	int					tmp;
 }				t_flags;
 
 typedef struct	s_compt
 {
 	int					i;
 	int					j;
-	int					k;
 	int					m;
+	int					nb;
 	char				*num;
 	char				*num2;
 }				t_compt;
@@ -69,9 +70,31 @@ typedef struct s_check_str
 	char				*str;
 }				t_check_str;
 
+typedef struct s_check_octa
+{
+	int					size;
+	char				*str;
+	int					surplus;
+}				t_check_octa;
+
+typedef struct s_check_hexa
+{
+	int					size;
+	char				*str;
+	int					surplus;
+}				t_check_hexa;
+
 //parse
 int				chose_flag(t_flags flags, va_list va, int nb);
 int				parse(char *str, va_list va);
+t_flags			compt_flags(t_flags flags, t_compt compt, char *str);
+int				give_info(t_compt *compt, t_flags flags,
+		va_list va, char *str);
+t_compt			print_car(t_compt compt, char *str);
+int				chose_for_digit(t_flags flags, va_list va,
+		int nb, t_args args);
+int				chose_other_digit(t_flags flags, va_list va,
+		int nb, t_args args);
 
 //init
 t_check_str		init_str(t_flags flags, int size, char *str);
