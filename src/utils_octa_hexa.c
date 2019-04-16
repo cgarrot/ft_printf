@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:23:07 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 18:27:29 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 13:33:43 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,6 +22,11 @@ char	*dectoocta(unsigned long n, t_flags flags)
 		n = (unsigned short)n;
 	seg = ft_strnew(0);
 	i = 0;
+	if (n == 0)
+	{
+		seg[i] = 48;
+		return (seg);
+	}
 	while (n != 0)
 	{
 		seg[i] = 48 + (n % 8);
