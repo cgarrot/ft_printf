@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 17:21:14 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 20:22:12 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -70,6 +70,15 @@ typedef struct s_check_str
 	char				*str;
 }				t_check_str;
 
+typedef struct s_check_digit
+{
+	char				*num;
+	int					yn;
+	int					unplus;
+	int					space;
+	long long			negdig;
+}				t_check_digit;
+
 typedef struct s_check_octa
 {
 	int					size;
@@ -103,7 +112,6 @@ t_flags			init(t_flags flags);
 //utils
 int				ft_isflags(char c);
 int				ft_atoi_2(char const *str);
-char			*ft_strnrev(char *str, int n);
 char			*ft_strrev(char *str);
 void			ft_putnstr(char const *s, int size);
 void			ft_putncaract(char c, int size);
