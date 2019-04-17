@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 09:57:42 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 17:21:14 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -103,6 +103,7 @@ t_flags			init(t_flags flags);
 //utils
 int				ft_isflags(char c);
 int				ft_atoi_2(char const *str);
+char			*ft_strnrev(char *str, int n);
 char			*ft_strrev(char *str);
 void			ft_putnstr(char const *s, int size);
 void			ft_putncaract(char c, int size);
@@ -111,7 +112,7 @@ char			*ft_strcapitalize(char *str);
 //utils octa hexa
 char			*dectoocta(unsigned long n, t_flags flags);
 void			ft_putstro(char *str, t_flags flags);
-char			*dectohexa(long long n);
+char			*dectohexa(unsigned long long n, t_flags flags);
 void			ft_putstrx(char *str, t_flags flags);
 void			ft_puthash(t_flags flags);
 

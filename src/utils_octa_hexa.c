@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:23:07 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 13:33:43 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/17 17:50:39 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -59,13 +59,14 @@ void	ft_putstro(char *str, t_flags flags)
 		ft_putstr(str);
 }
 
-char	*dectohexa(long long n)
+char	*dectohexa(unsigned long long n, t_flags flags)
 {
 	char	*seg;
 	int		i;
 	int		tmp;
 
-	seg = ft_strnew(0);
+	if (!(seg = ft_strnew(0)))
+		return (0);
 	i = 0;
 	if (n == 0)
 	{
@@ -82,6 +83,12 @@ char	*dectohexa(long long n)
 		i++;
 		n = n / 16;
 	}
+	if (ft_strlen(seg) > 8 && !flags._l)
+		seg[8] = '\0';
+	if (flags._h == 1)
+		seg[4] = '\0';
+	if (flags._h == 2)
+		seg[2] = '\0';
 	return (ft_strrev(seg));
 }
 

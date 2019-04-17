@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:07:47 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 16:03:31 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/16 15:10:39 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -38,25 +38,6 @@ int		ft_atoi_2(char const *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		nbr = nbr * 10 + str[i++] - '0';
 	return (nbr);
-}
-
-char	*ft_strrev(char *str)
-{
-	int		i;
-	int		j;
-	char	rev;
-
-	i = 0;
-	j = ft_strlen(str) - 1;
-	while (i < j)
-	{
-		rev = str[i];
-		str[i] = str[j];
-		str[j] = rev;
-		j--;
-		i++;
-	}
-	return (str);
 }
 
 void	ft_putnstr(char const *s, int size)
