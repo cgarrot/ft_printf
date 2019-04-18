@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:29:01 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 10:33:02 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/18 15:01:32 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -80,21 +80,18 @@ int		prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 		ft_putncaract('0', (flags.precision - ft_strlen(c_dig.num)));
 		ft_putstr(c_dig.num);
 		if (flags.width > flags.precision)
-			return (flags.width + flags.space - ft_strlen(c_dig.num) + c_dig.yn);
+			return (flags.width + flags.space - ft_strlen(c_dig.num)
+					+ c_dig.yn);
 		return (flags.precision + flags.space + c_dig.yn);
 	}
-	if (flags.precision < ft_strlen(c_dig.num))
-	{
-		if (flags.precision < 1)
-			ft_putncaract(' ', (flags.width - ft_strlen(c_dig.num)));
-		if (flags.precision < 1)
-			c_dig.yn++;
-		ft_putstr(c_dig.num);
-		if (c_dig.yn)
-			return (flags.width + flags.space);
-		return (ft_strlen(c_dig.num));
-	}
-	return (0);
+	if ((flags.precision < 1) && (flags.precision < ft_strlen(c_dig.num)))
+		ft_putncaract(' ', (flags.width - ft_strlen(c_dig.num)));
+	if ((flags.precision < 1 && (flags.precision < ft_strlen(c_dig.num))))
+		c_dig.yn++;
+	ft_putstr(c_dig.num);
+	if ((c_dig.yn && (flags.precision < ft_strlen(c_dig.num))))
+		return (flags.width + flags.space);
+	return (ft_strlen(c_dig.num));
 }
 
 int		width_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
@@ -115,7 +112,7 @@ int		width_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 					&& ft_strlen(c_dig.num) < 2)
 				ft_putchar(' ');
 			return (put_ret(c_dig.num, flags.width +
-					flags.space + c_dig.space));
+						flags.space + c_dig.space));
 		}
 		else
 			return (put_ret(" ", flags.width + flags.space));

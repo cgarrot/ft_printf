@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 12:37:56 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/18 14:54:41 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -84,6 +84,7 @@ typedef struct s_check_octa
 	int					size;
 	char				*str;
 	int					surplus;
+	int					tmp;
 }				t_check_octa;
 
 typedef struct s_check_hexa
@@ -151,17 +152,17 @@ int				width_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig);
 
 //%c
 int				check_p_w_caract(int c, t_flags flags);
-int				is_octa_hash(unsigned long dec, t_flags flags, t_check_octa c_octa);
-int				is_octa_width_no_op(unsigned long dec, t_flags flags, t_check_octa c_octa);
+
+//%o
+int				is_octa_hash(unsigned long dec, t_flags flags, t_check_octa *c_octa);
+int				is_octa_width_no_op(unsigned long dec, t_flags flags, t_check_octa *c_octa);
 void			octa_print_space_0(unsigned long dec, t_flags flags, t_check_octa *c_octa, int chose);
 int				is_octa_width_lower_no_op(unsigned long dec, t_flags flags, t_check_octa *c_octa);
-int				is_octa_width_lower(unsigned long dec, t_flags flags, t_check_octa c_octa);
-int				is_octa_width(unsigned long dec, t_flags flags, t_check_octa c_octa);
+int				is_octa_width_lower(unsigned long dec, t_flags flags, t_check_octa *c_octa);
+int				is_octa_width(unsigned long dec, t_flags flags, t_check_octa *c_octa);
 int				is_octa_width_up_prec(unsigned long dec, t_flags flags, t_check_octa *c_octa);
 int				is_octa_width_prec(unsigned long dec, t_flags flags, t_check_octa *c_octa);
 int				is_octa_no_width_prec(unsigned long dec, t_flags flags, t_check_octa *c_octa);
-
-//%o
 int				check_p_w_octa(unsigned long dec, t_flags flags);
 
 //%x
