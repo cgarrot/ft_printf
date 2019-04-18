@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:07:47 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 15:10:39 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/18 10:38:59 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -54,4 +54,15 @@ void	ft_putncaract(char c, int size)
 	if (size >= 0)
 		while (++i != size)
 			ft_putchar(c);
+}
+
+char	*cut_str_long(char *seg, t_flags flags)
+{
+	if (ft_strlen(seg) > 8 && !flags._l)
+		seg[8] = '\0';
+	if (flags._h == 1)
+		seg[4] = '\0';
+	if (flags._h == 2)
+		seg[2] = '\0';
+	return (seg);
 }

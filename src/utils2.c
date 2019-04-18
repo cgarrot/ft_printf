@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:30:47 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/16 15:08:07 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/18 12:55:13 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,4 +44,16 @@ char	*ft_strrev(char *str)
 		i++;
 	}
 	return (str);
+}
+
+int		put_ret(char *str, int len)
+{
+	ft_putstr(str);
+	return (len);
+}
+
+void	put_init(char *str, t_check_octa *c_octa)
+{
+	ft_putstr(str);
+	c_octa->surplus = 1;
 }

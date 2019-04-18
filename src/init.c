@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:04:59 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/15 18:29:07 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/18 10:25:15 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,4 +40,13 @@ t_check_str		init_str(t_flags flags, int size, char *str)
 	c_str.size = size;
 	c_str.str = str;
 	return (c_str);
+}
+
+t_check_digit		init_digit(t_check_digit c_dig, long long digit)
+{
+	c_dig.yn = 0;
+	c_dig.space = 0;
+	c_dig.unplus = 1;
+	c_dig.negdig = digit;
+	return (c_dig);
 }

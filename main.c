@@ -6,13 +6,33 @@
 /*   By: seanseau <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/16 13:39:13 by seanseau     #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/17 18:18:08 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/18 10:45:07 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "includes/ft_printf.h"
 #include <stdio.h>
+
+void		print_help(t_flags flags, t_compt compt, char *str)
+{
+	printf("\nlast_caract[%c]\n", str[compt.j]);
+	printf("flag = [%c]\n", flags.flag);
+	printf("param = [%s]\n", compt.num);
+	printf("atoi flags.precision = [%s]\n", compt.num2);
+	printf("atoi flags.width = [%s]\n", compt.num);
+	printf("# = [%d]\n", flags.hashtag);
+	printf("+ = [%d]\n", flags.plus);
+	printf("- = [%d]\n", flags.minus);
+	printf("0 = [%d]\n", flags.zero);
+	printf(". = [%d]\n", flags.point);
+	printf("l = [%d]\n", flags._l);
+	printf("h = [%d]\n", flags._h);
+	printf("L = [%d]\n", flags._L);
+	printf("space = [%d]\n", flags.space);
+	printf("width = [%d]\n", flags.width);
+	printf("precision = [%d]\n\n", flags.precision);
+}
 
 int	main()
 {
