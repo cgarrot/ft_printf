@@ -6,7 +6,7 @@
 #    By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/10/10 19:59:22 by cgarrot      #+#   ##    ##    #+#        #
-#    Updated: 2019/04/18 12:58:14 by cgarrot     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/04/19 12:46:23 by cgarrot     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -27,6 +27,8 @@ FILES = src/check_caract\
 		src/check_digit_param2\
 		src/check_digit\
 		src/check_hexa\
+		src/check_hexa_param\
+		src/check_hexa_param2\
 		src/check_octa\
 		src/check_octa_param\
 		src/check_pointer\

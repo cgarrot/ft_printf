@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:29:01 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 15:01:32 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/19 12:52:27 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -80,8 +80,8 @@ int		prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 		ft_putncaract('0', (flags.precision - ft_strlen(c_dig.num)));
 		ft_putstr(c_dig.num);
 		if (flags.width > flags.precision)
-			return (flags.width + flags.space - ft_strlen(c_dig.num)
-					+ c_dig.yn);
+			return (flags.width + flags.space - ft_strlen(c_dig.num) +
+					c_dig.yn);
 		return (flags.precision + flags.space + c_dig.yn);
 	}
 	if ((flags.precision < 1) && (flags.precision < ft_strlen(c_dig.num)))

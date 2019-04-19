@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 14:54:41 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/19 12:41:34 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -91,7 +91,8 @@ typedef struct s_check_hexa
 {
 	int					size;
 	char				*str;
-	int					surplus;
+	int					exc;
+	int					tmp;
 }				t_check_hexa;
 
 //parse
@@ -167,6 +168,18 @@ int				check_p_w_octa(unsigned long dec, t_flags flags);
 
 //%x
 int				check_p_w_hexa(unsigned long long dec, t_flags flags);
+void			puthash_init(t_flags flags, t_check_hexa *c_hexa);
+int				is_hexa_width(unsigned long long dec, t_flags flags, t_check_hexa *c_hexa);
+int				is_hexa_width_0_minus(unsigned long long dec, t_flags flags, t_check_hexa *c_hexa);
+void			is_hexa_width_small_no_op(unsigned long long dec, t_flags flags, t_check_hexa *c_hexa);
+int				is_hexa_width_small(unsigned long long dec, t_flags flags, t_check_hexa c_hexa);
+int				is_hexa_width_no_prec_no_op(unsigned long long dec, t_flags flags, t_check_hexa c_hexa);
+int				is_hexa_width_no_prec(unsigned long long dec, t_flags flags, t_check_hexa c_hexa);
+int				is_hexa_width_upper_prec_minus(unsigned long long dec, t_flags flags, t_check_hexa *c_hexa);
+int				is_hexa_width_upper_prec(unsigned long long dec, t_flags flags, t_check_hexa *c_hexa);
+int				is_hexa_width_prec(unsigned long long dec, t_flags flags, t_check_hexa *c_hexa);
+int				is_hexa_no_width_prec(unsigned long long dec, t_flags flags, t_check_hexa c_hexa);
+int				is_hexa_no_op(unsigned long long dec, t_flags flags, t_check_hexa c_hexa);
 
 //%p
 int				check_p_w_ptr(void *ptr, t_flags flags);

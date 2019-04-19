@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:33:57 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 10:46:42 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/19 12:51:09 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -77,11 +77,5 @@ int		chose_flag(t_flags flags, va_list va, int nb)
 	if (flags.flag == 'x' || flags.flag == 'X'
 			|| flags.flag == 'o' || flags.flag == 'p')
 		nb = chose_other_digit(flags, va, nb, args);
-	/*
-	if (flags.flag == 'f')
-	{
-		args._f = va_arg(va, double);
-		nb += check_p_w_float(args._f, flags);
-	}*/
 	return (nb);
 }
