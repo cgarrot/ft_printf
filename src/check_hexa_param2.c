@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/19 12:42:09 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/19 12:50:12 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/04/19 16:29:44 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,8 +17,10 @@ int		is_hexa_width_no_prec(unsigned long long dec, t_flags flags,
 		t_check_hexa c_hexa)
 {
 	if (flags.hashtag && flags.point)
-		if ((c_hexa.tmp = is_hexa_width(dec, flags, &c_hexa) != -1))
+		if (!(c_hexa.tmp = is_hexa_width(dec, flags, &c_hexa)))
 			return (c_hexa.tmp);
+	if (c_hexa.tmp == flags.width && flags.width > ft_strlen(c_hexa.str))
+		return (flags.width);
 	if (flags.hashtag && flags.point && dec == 0)
 	{
 		if (!(flags.flag == 'p'))
