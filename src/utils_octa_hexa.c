@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:23:07 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 10:39:11 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/03 14:18:53 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,16 +17,28 @@ char	*dectoocta(unsigned long n, t_flags flags)
 {
 	char	*seg;
 	int		i;
+	int		j;
+	unsigned long	tmp;
 
 	if (flags._h)
 		n = (unsigned short)n;
-	seg = ft_strnew(0);
 	i = 0;
+	j = 0;
 	if (n == 0)
 	{
+		seg = ft_strnew(1);
 		seg[i] = 48;
 		return (seg);
 	}
+	tmp = n;
+	while (tmp != 0)
+	{
+		tmp = tmp / 8;
+		j++;
+	}
+	if (!(seg = malloc(sizeof(char) * j + 1)))
+		return (NULL);
+	seg[j + 1] = '\0';
 	while (n != 0)
 	{
 		seg[i] = 48 + (n % 8);
@@ -63,15 +75,29 @@ char	*dectohexa(unsigned long long n, t_flags flags)
 {
 	char	*seg;
 	int		i;
+	int		j;
 	int		tmp;
+	unsigned long long tmpn;
 
-	if (!(seg = ft_strnew(0)))
-		return (0);
 	i = 0;
+	j = 0;
 	if (n == 0)
+	{
+		seg = ft_strnew(1);
 		seg[i] = 48;
+		return (seg);
+	}
 	if (n == 0)
 		return (seg);
+	tmpn = n;
+	while (tmpn != 0)
+	{
+		tmpn = tmpn / 16;
+		j++;
+	}
+	if (!(seg = malloc(sizeof(char) * j + 1)))
+		return (NULL);
+	seg[j + 1] = '\0';
 	while (n != 0)
 	{
 		tmp = n % 16;

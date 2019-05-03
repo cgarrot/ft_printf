@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:11 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 14:55:58 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/03 14:55:53 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -126,11 +126,11 @@ int		check_p_w_octa(unsigned long dec, t_flags flags)
 	if (c_octa.size < 0)
 		c_octa.size = 0;
 	if (flags.width && !flags.precision)
-		return (is_octa_width(dec, flags, &c_octa));
+		c_octa.nb = is_octa_width(dec, flags, &c_octa);
 	else if (flags.width && flags.precision)
-		return (is_octa_width_prec(dec, flags, &c_octa));
+		c_octa.nb = is_octa_width_prec(dec, flags, &c_octa);
 	else if (!flags.width && flags.precision)
-		return (is_octa_no_width_prec(dec, flags, &c_octa));
+		c_octa.nb = is_octa_no_width_prec(dec, flags, &c_octa);
 	else
 	{
 		if (flags.hashtag && dec != 0 && c_octa.surplus != 1)
@@ -139,7 +139,9 @@ int		check_p_w_octa(unsigned long dec, t_flags flags)
 				&& !flags.width))
 			ft_putstro(c_octa.str, flags);
 		if (dec != 0 || (dec == 0 && !flags.point))
-			return ((ft_strlen(c_octa.str) + c_octa.surplus));
-		return (c_octa.surplus);
+			c_octa.nb = (ft_strlen(c_octa.str) + c_octa.surplus);
+		c_octa.nb = c_octa.surplus;
 	}
+	ft_strdel(&c_octa.str);
+	return (c_octa.nb);
 }

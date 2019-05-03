@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:42 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/19 12:47:21 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/03 14:47:53 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -80,6 +80,7 @@ int		is_hexa_no_op(unsigned long long dec, t_flags flags,
 int		check_p_w_hexa(unsigned long long dec, t_flags flags)
 {
 	t_check_hexa	c_hexa;
+	int				nb;
 
 	c_hexa.exc = 0;
 	c_hexa.str = dectohexa(dec, flags);
@@ -89,11 +90,13 @@ int		check_p_w_hexa(unsigned long long dec, t_flags flags)
 	if (c_hexa.size < 0)
 		c_hexa.size = 0;
 	if (flags.width && !flags.precision)
-		return (is_hexa_width_no_prec(dec, flags, c_hexa));
+		nb = is_hexa_width_no_prec(dec, flags, c_hexa);
 	else if (flags.width && flags.precision)
-		return (is_hexa_width_prec(dec, flags, &c_hexa));
+		nb = is_hexa_width_prec(dec, flags, &c_hexa);
 	else if (!flags.width && flags.precision)
-		return (is_hexa_no_width_prec(dec, flags, c_hexa));
+		nb = is_hexa_no_width_prec(dec, flags, c_hexa);
 	else
-		return (is_hexa_no_op(dec, flags, c_hexa));
+		nb = is_hexa_no_op(dec, flags, c_hexa);
+	ft_strdel(&c_hexa.str);
+	return (nb);
 }

@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/10/07 07:21:23 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2018/10/08 15:47:21 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/03 13:53:41 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -15,13 +15,10 @@
 
 char	*ft_strnew(size_t size)
 {
-	char	*str;
+	char*str;
 
-	if (size != 0)
-		size++;
-	if (!(str = (char*)malloc(sizeof(char) * size)))
+	if (!(str = (malloc(sizeof(char) * (size + 1)))))
 		return (0);
-	while (size--)
-		str[size] = '\0';
+	ft_bzero(str, size + 1);
 	return (str);
 }

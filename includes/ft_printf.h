@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/19 12:41:34 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/03 14:50:34 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -19,8 +19,8 @@
 
 typedef struct	s_flags
 {
-	unsigned int		hashtag;
-	unsigned int		zero;
+	int					hashtag;
+	int					zero;
 	unsigned int		minus;
 	unsigned int		plus;
 	unsigned int		point;
@@ -77,6 +77,7 @@ typedef struct s_check_digit
 	int					unplus;
 	int					space;
 	long long			negdig;
+	int					ret;
 }				t_check_digit;
 
 typedef struct s_check_octa
@@ -85,6 +86,7 @@ typedef struct s_check_octa
 	char				*str;
 	int					surplus;
 	int					tmp;
+	int					nb;
 }				t_check_octa;
 
 typedef struct s_check_hexa
@@ -109,7 +111,7 @@ int				chose_other_digit(t_flags flags, va_list va,
 
 //init
 t_check_str		init_str(t_flags flags, int size, char *str);
-t_flags			init(t_flags flags);
+void			init(t_flags *flags);
 t_check_digit	init_digit(t_check_digit c_dig, long long digit);
 
 //utils

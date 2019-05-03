@@ -6,32 +6,38 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:45:53 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 10:46:19 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/03 16:12:09 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
+#include <stdio.h>
 
 int			give_info(t_compt *compt, t_flags flags, va_list va, char *str)
 {
 	compt->j = compt->i;
 	flags.tmp = 0;
-	flags = init(flags);
-	compt->num2 = ft_strnew(0);
+	init(&flags);
 	while (!(ft_isflags(str[compt->j++])))
 		flags = compt_flags(flags, *compt, str);
 	flags.flag = str[compt->j - 1];
 	if (!(compt->num = ft_strsub(str, compt->i, (compt->j - compt->i))))
 		return (0);
+	compt->num2 = NULL;
 	if (flags.point)
 		if (!(compt->num2 = ft_strsub(str, flags.tmp + 1,
-				(compt->j - flags.tmp - 1))))
+						(compt->j - flags.tmp - 1))))
 			return (0);
-	flags.precision = ft_atoi_2(compt->num2);
+	if (compt->num2 == NULL)
+		flags.precision = 0;
+	else
+		flags.precision = ft_atoi_2(compt->num2);
 	flags.width = ft_atoi_2(compt->num);
 	compt->i = compt->j - 1;
 	compt->nb = chose_flag(flags, va, compt->nb);
+	ft_strdel(&compt->num);
+	ft_strdel(&compt->num2);
 	return (1);
 }
 
@@ -107,7 +113,7 @@ int			parse(char *str, va_list va)
 	{
 		compt = print_car(compt, str);
 		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' &&
-				str[compt.i + 1] != '\0'))
+					str[compt.i + 1] != '\0'))
 			if (!(give_info(&compt, flags, va, str)))
 				return (0);
 	}
