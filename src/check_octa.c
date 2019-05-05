@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:11 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/03 14:55:53 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 18:22:51 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -119,12 +119,9 @@ int		check_p_w_octa(unsigned long dec, t_flags flags)
 {
 	t_check_octa	c_octa;
 
-	c_octa.surplus = 0;
 	if (!(c_octa.str = dectoocta(dec, flags)))
 		return (0);
-	c_octa.size = flags.width - ft_strlen(c_octa.str);
-	if (c_octa.size < 0)
-		c_octa.size = 0;
+	init_octa(&c_octa, flags);
 	if (flags.width && !flags.precision)
 		c_octa.nb = is_octa_width(dec, flags, &c_octa);
 	else if (flags.width && flags.precision)

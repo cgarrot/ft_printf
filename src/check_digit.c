@@ -6,14 +6,15 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:42:56 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 10:32:17 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 18:35:00 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-char	*make_str(long long digit, t_flags flags, char *str)
+char	*make_str(long long digit, t_flags flags, char *str,
+		t_check_digit *c_dig)
 {
 	if (flags.flag == 'u')
 	{
@@ -37,6 +38,7 @@ char	*make_str(long long digit, t_flags flags, char *str)
 		else
 			str = ft_itoa(digit);
 	}
+	c_dig->len = ft_strlen(str);
 	return (str);
 }
 
@@ -53,30 +55,39 @@ void	is_space(long long digit, t_flags *flags, t_check_digit *c_dig)
 	}
 }
 
+void	is_flag_u(long long digit, t_flags *flags, t_check_digit *c_dig)
+{
+	if (flags->flag == 'u')
+		flags->plus = 0;
+	if (digit < 0 && flags->flag != 'u')
+		c_dig->negdig = -digit;
+}
+
 int		check_p_w_digit(long long digit, t_flags flags)
 {
 	t_check_digit		c_dig;
 
-	c_dig = init_digit(c_dig, digit);
-	if (flags.flag == 'u')
-		flags.plus = 0;
-	if (digit < 0 && flags.flag != 'u')
-		c_dig.negdig = -digit;
-	if (!(c_dig.num = make_str(digit, flags, c_dig.num)))
+	c_dig.ret = -1;
+	init_digit(&c_dig, digit);
+	is_flag_u(digit, &flags, &c_dig);
+	if (!(c_dig.num = make_str(digit, flags, c_dig.num, &c_dig)))
 		return (0);
 	is_space(digit, &flags, &c_dig);
 	if (flags.plus)
-		return (is_digit_plus(digit, flags, c_dig));
+		c_dig.ret = is_digit_plus(digit, flags, c_dig);
 	else if (flags.minus)
-		return (is_digit_minus(digit, flags, c_dig));
+		c_dig.ret = is_digit_minus(digit, flags, c_dig);
 	else
 	{
 		if (flags.precision)
-			return (prec_digit_no_op(digit, flags, c_dig));
+			c_dig.ret = prec_digit_no_op(digit, flags, c_dig);
 		else if (flags.width)
-			return (width_digit_no_op(digit, flags, c_dig));
+			c_dig.ret = width_digit_no_op(digit, flags, c_dig);
 		else if ((digit == 0 && !flags.point) || digit != 0)
-			return (put_ret(c_dig.num, ft_strlen(c_dig.num) + flags.space));
+			c_dig.ret = put_ret(c_dig.num, ft_strlen(c_dig.num) + flags.space);
 	}
-	return (0 + flags.space);
+	ft_strdel(&c_dig.num);
+	if (c_dig.ret != -1)
+		return (c_dig.ret);
+	return (flags.space + 0);
 }

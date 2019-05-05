@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:04:59 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/02 16:15:48 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 18:21:14 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -41,12 +41,21 @@ t_check_str		init_str(t_flags flags, int size, char *str)
 	return (c_str);
 }
 
-t_check_digit	init_digit(t_check_digit c_dig, long long digit)
+void			init_digit(t_check_digit *c_dig, long long digit)
 {
-	c_dig.yn = 0;
-	c_dig.space = 0;
-	c_dig.unplus = 1;
-	c_dig.negdig = digit;
-	c_dig.ret = 0;
-	return (c_dig);
+	c_dig->num = NULL;
+	c_dig->negnum = NULL;
+	c_dig->yn = 0;
+	c_dig->space = 0;
+	c_dig->unplus = 1;
+	c_dig->negdig = digit;
+	c_dig->ret = 0;
+}
+
+void			init_octa(t_check_octa *c_octa, t_flags flags)
+{
+	c_octa->surplus = 0;
+	c_octa->size = flags.width - ft_strlen(c_octa->str);
+	if (c_octa->size < 0)
+		c_octa->size = 0;
 }

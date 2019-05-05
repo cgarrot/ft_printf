@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/03 14:50:34 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 18:42:15 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -73,6 +73,8 @@ typedef struct s_check_str
 typedef struct s_check_digit
 {
 	char				*num;
+	char				*negnum;
+	int					len;
 	int					yn;
 	int					unplus;
 	int					space;
@@ -112,7 +114,8 @@ int				chose_other_digit(t_flags flags, va_list va,
 //init
 t_check_str		init_str(t_flags flags, int size, char *str);
 void			init(t_flags *flags);
-t_check_digit	init_digit(t_check_digit c_dig, long long digit);
+void			init_digit(t_check_digit *c_dig, long long digit);
+void			init_octa(t_check_octa *c_octa, t_flags flags);
 
 //utils
 int				ft_isflags(char c);
@@ -124,6 +127,7 @@ char			*ft_strcapitalize(char *str);
 int				put_ret(char *str, int len);
 void			put_init(char *str, t_check_octa *c_octa);
 char			*cut_str_long(char *seg, t_flags flags);
+void			free_digit(long long digit, t_check_digit *c_dig);
 
 //utils octa hexa
 char			*dectoocta(unsigned long n, t_flags flags);
@@ -131,6 +135,8 @@ void			ft_putstro(char *str, t_flags flags);
 char			*dectohexa(unsigned long long n, t_flags flags);
 void			ft_putstrx(char *str, t_flags flags);
 void			ft_puthash(t_flags flags);
+int				ret_int(unsigned long long n, int base);
+char			*octa_zero(char *seg);
 
 //%s
 int				precision_width_str(t_check_str c_str);
@@ -141,10 +147,10 @@ int				check_p_w_str(char *str, t_flags flags);
 
 //%d
 int				check_p_w_digit(long long digit, t_flags flags);
-char			*make_str(long long digit, t_flags flags, char *str);
+char			*make_str(long long digit, t_flags flags, char *str, t_check_digit *c_dig);
 void			is_space(long long digit, t_flags *flags, t_check_digit *c_dig);
 void			digit_upper_0(long long digit, t_check_digit *c_dig, int chose);
-void			digit_lower_0(long long digit, t_check_digit *c_dig, t_flags flags);
+void			digit_lower_0(long long digit, t_check_digit *c_dig, t_flags flags, int n);
 int				digit_plus_prec(long long digit, t_flags flags, t_check_digit c_dig);
 int				digit_plus_width(long long digit, t_flags flags, t_check_digit c_dig);
 int				digit_plus_width2(long long digit, t_flags flags, t_check_digit c_dig);
@@ -152,6 +158,7 @@ int				is_digit_plus(long long digit, t_flags flags, t_check_digit c_dig);
 int				is_digit_minus(long long digit, t_flags flags, t_check_digit c_dig);
 int				prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig);
 int				width_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig);
+void			is_flag_u(long long digit, t_flags *flags, t_check_digit *c_dig);
 
 //%c
 int				check_p_w_caract(int c, t_flags flags);

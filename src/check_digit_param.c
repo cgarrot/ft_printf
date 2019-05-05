@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:26:37 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 10:32:42 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 18:44:03 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -33,18 +33,23 @@ void	digit_upper_0(long long digit, t_check_digit *c_dig, int chose)
 		}
 }
 
-void	digit_lower_0(long long digit, t_check_digit *c_dig, t_flags flags)
+void	digit_lower_0(long long digit, t_check_digit *c_dig,
+		t_flags flags, int n)
 {
 	if (digit < 0)
 	{
 		ft_putchar('-');
-		ft_strdel(&c_dig->num);
 		if (!flags._l)
-			c_dig->num = ft_itoa(c_dig->negdig);
+			c_dig->negnum = ft_itoa(c_dig->negdig);
 		if (flags._l)
-			c_dig->num = ft_lltoa(c_dig->negdig);
+			c_dig->negnum = ft_lltoa(c_dig->negdig);
 		c_dig->yn++;
 	}
+	else
+		c_dig->negnum = c_dig->num;
+	c_dig->len = ft_strlen(c_dig->negnum);
+	if (n == 1)
+		ft_putncaract('0', (flags.precision - ft_strlen(c_dig->negnum)));
 }
 
 int		digit_plus_prec(long long digit, t_flags flags, t_check_digit c_dig)

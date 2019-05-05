@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:30:47 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 12:55:13 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 17:45:45 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -56,4 +56,10 @@ void	put_init(char *str, t_check_octa *c_octa)
 {
 	ft_putstr(str);
 	c_octa->surplus = 1;
+}
+
+void	free_digit(long long digit, t_check_digit *c_dig)
+{
+	if (digit < 0)
+		ft_strdel(&c_dig->negnum);
 }
