@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:42:56 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 18:35:00 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 19:05:17 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,22 +18,22 @@ char	*make_str(long long digit, t_flags flags, char *str,
 {
 	if (flags.flag == 'u')
 	{
-		if (flags._l)
+		if (flags.l)
 			str = ft_ulltoa(digit);
-		else if (flags._h == 1)
+		else if (flags.h == 1)
 			str = ft_uhtoa(digit);
-		else if (flags._h == 2)
+		else if (flags.h == 2)
 			str = ft_uhhtoa(digit);
 		else
 			str = ft_utoa(digit);
 	}
 	if (flags.flag == 'i' || flags.flag == 'd')
 	{
-		if (flags._l)
+		if (flags.l)
 			str = ft_lltoa(digit);
-		else if (flags._h == 1)
+		else if (flags.h == 1)
 			str = ft_htoa(digit);
-		else if (flags._h == 2)
+		else if (flags.h == 2)
 			str = ft_hhtoa(digit);
 		else
 			str = ft_itoa(digit);

@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/19 12:41:50 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/19 16:18:35 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 19:04:03 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -134,13 +134,13 @@ int		is_hexa_width_no_prec_no_op(unsigned long long dec,
 		ft_puthash(flags);
 	if (flags.hashtag && dec != 0 && c_hexa.exc != 2)
 		c_hexa.exc = 2;
-	if (!flags._h && !flags._l && ft_strlen(c_hexa.str) > 8)
+	if (!flags.h && !flags.l && ft_strlen(c_hexa.str) > 8)
 		ft_putncaract(' ', flags.width - 8);
-	else if (flags._h == 1 && ft_strlen(c_hexa.str) > 4)
+	else if (flags.h == 1 && ft_strlen(c_hexa.str) > 4)
 		ft_putncaract(' ', flags.width - 4);
-	else if (flags._h == 2 && ft_strlen(c_hexa.str) > 2)
+	else if (flags.h == 2 && ft_strlen(c_hexa.str) > 2)
 		ft_putncaract(' ', flags.width - 2);
-	if (dec != 0 || (flags._h && dec == 0))
+	if (dec != 0 || (flags.h && dec == 0))
 		ft_putstrx(c_hexa.str, flags);
 	else
 		ft_putncaract(' ', 1);

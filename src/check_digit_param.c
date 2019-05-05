@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:26:37 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 18:44:03 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 19:05:01 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -39,9 +39,9 @@ void	digit_lower_0(long long digit, t_check_digit *c_dig,
 	if (digit < 0)
 	{
 		ft_putchar('-');
-		if (!flags._l)
+		if (!flags.l)
 			c_dig->negnum = ft_itoa(c_dig->negdig);
-		if (flags._l)
+		if (flags.l)
 			c_dig->negnum = ft_lltoa(c_dig->negdig);
 		c_dig->yn++;
 	}

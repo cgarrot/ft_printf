@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:04:59 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 18:21:14 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 19:03:01 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -23,9 +23,9 @@ void			init(t_flags *flags)
 	flags->width = 0;
 	flags->precision = 0;
 	flags->space = 0;
-	flags->_l = 0;
-	flags->_h = 0;
-	flags->_L = 0;
+	flags->l = 0;
+	flags->h = 0;
+	flags->ll = 0;
 }
 
 t_check_str		init_str(t_flags flags, int size, char *str)

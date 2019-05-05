@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:45:53 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 16:53:39 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 19:01:05 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -93,12 +93,12 @@ t_flags		compt_flags(t_flags flags, t_compt cpt, char *str)
 	}
 	if (str[cpt.j] == ' ' && flags.space < 1)
 		flags.space++;
-	if (str[cpt.j] == 'l' && flags._l < 2)
-		flags._l++;
-	if (str[cpt.j] == 'h' && flags._h < 2)
-		flags._h++;
-	if (str[cpt.j] == 'L' && flags._L < 1)
-		flags._L++;
+	if (str[cpt.j] == 'l' && flags.l < 2)
+		flags.l++;
+	if (str[cpt.j] == 'h' && flags.h < 2)
+		flags.h++;
+	if (str[cpt.j] == 'L' && flags.ll < 1)
+		flags.ll++;
 	return (flags);
 }
 

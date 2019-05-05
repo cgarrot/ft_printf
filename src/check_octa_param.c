@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 12:55:43 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/04/18 14:56:11 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 19:03:38 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -43,11 +43,11 @@ int		is_octa_width_no_op(unsigned long dec, t_flags flags,
 {
 	if (flags.hashtag && dec != 0 && c_octa->surplus != 1)
 		put_init("0", c_octa);
-	if (ft_strlen(c_octa->str) > 11 && !flags._l && !flags._h)
+	if (ft_strlen(c_octa->str) > 11 && !flags.l && !flags.h)
 		ft_putncaract(' ', flags.width - 11);
-	else if (ft_strlen(c_octa->str) > 6 && flags._h == 1)
+	else if (ft_strlen(c_octa->str) > 6 && flags.h == 1)
 		ft_putncaract(' ', flags.width - 6);
-	else if (ft_strlen(c_octa->str) > 3 && flags._h == 2)
+	else if (ft_strlen(c_octa->str) > 3 && flags.h == 2)
 		ft_putncaract(' ', flags.width - 3);
 	if (dec != 0 || (dec == 0 && flags.zero) || (dec == 0 && !flags.point))
 		ft_putstro(c_octa->str, flags);
@@ -75,13 +75,13 @@ void	octa_print_space_0(unsigned long dec, t_flags flags,
 		if (ft_strlen(c_octa->str) < 12)
 			ft_putncaract('0', flags.precision - ft_strlen(c_octa->str) -
 					c_octa->surplus);
-		if (ft_strlen(c_octa->str) > 11 && !flags._l && !flags._h)
+		if (ft_strlen(c_octa->str) > 11 && !flags.l && !flags.h)
 			ft_putncaract('0', flags.precision - 11);
-		if (ft_strlen(c_octa->str) > 11 && flags._l && !flags._h)
+		if (ft_strlen(c_octa->str) > 11 && flags.l && !flags.h)
 			ft_putncaract('0', flags.precision - ft_strlen(c_octa->str));
-		if (ft_strlen(c_octa->str) > 11 && !flags._l && flags._h == 1)
+		if (ft_strlen(c_octa->str) > 11 && !flags.l && flags.h == 1)
 			ft_putncaract('0', flags.precision - 6);
-		if (ft_strlen(c_octa->str) > 11 && !flags._l && flags._h == 2)
+		if (ft_strlen(c_octa->str) > 11 && !flags.l && flags.h == 2)
 			ft_putncaract('0', flags.precision - 3);
 	}
 }

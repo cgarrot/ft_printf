@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:42 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/03 14:47:53 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/05 19:04:20 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -32,13 +32,13 @@ int		is_hexa_no_width_prec(unsigned long long dec, t_flags flags,
 	{
 		if (ft_strlen(c_hexa.str) < 9)
 			ft_putncaract('0', flags.precision - ft_strlen(c_hexa.str));
-		if (ft_strlen(c_hexa.str) > 8 && !flags._l && !flags._h)
+		if (ft_strlen(c_hexa.str) > 8 && !flags.l && !flags.h)
 			ft_putncaract('0', flags.precision - 8);
-		if (ft_strlen(c_hexa.str) > 8 && !flags._l && flags._h == 1)
+		if (ft_strlen(c_hexa.str) > 8 && !flags.l && flags.h == 1)
 			ft_putncaract('0', flags.precision - 4);
-		if (ft_strlen(c_hexa.str) > 8 && !flags._l && flags._h == 2)
+		if (ft_strlen(c_hexa.str) > 8 && !flags.l && flags.h == 2)
 			ft_putncaract('0', flags.precision - 2);
-		if (ft_strlen(c_hexa.str) > 8 && flags._l && !flags._h)
+		if (ft_strlen(c_hexa.str) > 8 && flags.l && !flags.h)
 			ft_putncaract('0', flags.precision - ft_strlen(c_hexa.str));
 		ft_putstrx(c_hexa.str, flags);
 		return (flags.precision + c_hexa.exc);
