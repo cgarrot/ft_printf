@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:42:56 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 19:05:17 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/21 10:53:24 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -67,7 +67,6 @@ int		check_p_w_digit(long long digit, t_flags flags)
 {
 	t_check_digit		c_dig;
 
-	c_dig.ret = -1;
 	init_digit(&c_dig, digit);
 	is_flag_u(digit, &flags, &c_dig);
 	if (!(c_dig.num = make_str(digit, flags, c_dig.num, &c_dig)))
@@ -87,7 +86,7 @@ int		check_p_w_digit(long long digit, t_flags flags)
 			c_dig.ret = put_ret(c_dig.num, ft_strlen(c_dig.num) + flags.space);
 	}
 	ft_strdel(&c_dig.num);
-	if (c_dig.ret != -1)
+	if (c_dig.ret != 0)
 		return (c_dig.ret);
 	return (flags.space + 0);
 }

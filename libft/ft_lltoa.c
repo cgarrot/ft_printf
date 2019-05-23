@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/03/19 10:41:16 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/03/27 14:24:09 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/21 10:49:02 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,8 +40,9 @@ char			*ft_lltoa(long long n)
 
 	if (n == LLONG_MIN)
 	{
-		str = ft_memalloc(20);
-		str = ft_strcpy(str, "−9223372036854775807");
+		str = ft_memalloc(21);
+		str = ft_strcpy(str, "-9223372036854775808");
+		str[20] = '\0';
 		return (str);
 	}
 	tmp2 = one(n);

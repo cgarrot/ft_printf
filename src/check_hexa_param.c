@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/19 12:41:50 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 19:04:03 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/21 11:09:25 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -90,8 +90,9 @@ int		is_hexa_width_0_minus(unsigned long long dec, t_flags flags,
 	}
 	else if (flags.minus)
 	{
+		ft_putchar('0');
 		ft_putncaract(' ', (flags.width - ft_strlen(c_hexa->str) -
-					c_hexa->exc + 1));
+					c_hexa->exc));
 		return (1);
 	}
 	return (0);

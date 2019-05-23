@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:11 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 18:22:51 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/21 11:29:57 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -130,14 +130,15 @@ int		check_p_w_octa(unsigned long dec, t_flags flags)
 		c_octa.nb = is_octa_no_width_prec(dec, flags, &c_octa);
 	else
 	{
-		if (flags.hashtag && dec != 0 && c_octa.surplus != 1)
+		if (flags.hashtag && c_octa.surplus != 1)
 			put_init("0", &c_octa);
 		if (dec != 0 || (dec == 0 && !flags.point && !flags.precision
 				&& !flags.width))
 			ft_putstro(c_octa.str, flags);
 		if (dec != 0 || (dec == 0 && !flags.point))
 			c_octa.nb = (ft_strlen(c_octa.str) + c_octa.surplus);
-		c_octa.nb = c_octa.surplus;
+		if (dec == 0)
+			c_octa.nb += c_octa.surplus;
 	}
 	ft_strdel(&c_octa.str);
 	return (c_octa.nb);
