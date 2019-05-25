@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:26:37 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 19:05:01 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/25 19:27:41 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -26,11 +26,13 @@ void	digit_upper_0(long long digit, t_check_digit *c_dig, int chose)
 			ft_putstr(c_dig->num);
 	}
 	if (chose == 3)
+	{
 		if (digit > 0)
-		{
 			ft_putchar('+');
-			c_dig->yn++;
-		}
+		if (digit < 0)
+			ft_putchar('-');
+		c_dig->yn++;
+	}
 }
 
 void	digit_lower_0(long long digit, t_check_digit *c_dig,
@@ -49,7 +51,14 @@ void	digit_lower_0(long long digit, t_check_digit *c_dig,
 		c_dig->negnum = c_dig->num;
 	c_dig->len = ft_strlen(c_dig->negnum);
 	if (n == 1)
+	{
+		if (flags.plus && digit > 0)
+		{
+			ft_putchar('+');
+			c_dig->yn++;
+		}
 		ft_putncaract('0', (flags.precision - ft_strlen(c_dig->negnum)));
+	}
 }
 
 int		digit_plus_prec(long long digit, t_flags flags, t_check_digit c_dig)
@@ -83,7 +92,9 @@ int		digit_plus_prec(long long digit, t_flags flags, t_check_digit c_dig)
 int		digit_plus_width(long long digit, t_flags flags, t_check_digit c_dig)
 {
 	digit_upper_0(digit, &c_dig, 3);
-	if (!flags.minus && !flags.plus)
+	if (digit < 0)
+		c_dig.num = c_dig.str;
+	if (!flags.minus && flags.plus)
 	{
 		ft_putncaract('0', (flags.width - ft_strlen(c_dig.num) - c_dig.yn));
 		c_dig.yn++;
@@ -94,6 +105,8 @@ int		digit_plus_width(long long digit, t_flags flags, t_check_digit c_dig)
 		ft_putncaract(' ', (flags.width - ft_strlen(c_dig.num) - c_dig.yn));
 		return (flags.space + flags.width);
 	}
+	if (!flags.minus && flags.plus)
+		return (flags.space + flags.width + ft_strlen(c_dig.num) - c_dig.yn);
 	return (flags.space + flags.width - c_dig.yn);
 }
 

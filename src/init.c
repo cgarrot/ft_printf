@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:04:59 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 19:59:08 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/25 18:34:32 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -44,6 +44,7 @@ t_check_str		init_str(t_flags flags, int size, char *str)
 void			init_digit(t_check_digit *c_dig, long long digit)
 {
 	c_dig->num = NULL;
+	c_dig->str = NULL;
 	c_dig->negnum = NULL;
 	c_dig->yn = 0;
 	c_dig->space = 0;

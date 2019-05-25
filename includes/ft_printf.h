@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 18:59:22 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/25 19:31:53 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -74,12 +74,14 @@ typedef struct		s_check_digit
 {
 	char				*num;
 	char				*negnum;
+	char				*str;
 	int					len;
 	int					yn;
 	int					unplus;
 	int					space;
 	long long			negdig;
 	int					ret;
+	int					diff;
 }					t_check_digit;
 
 typedef struct		s_check_octa

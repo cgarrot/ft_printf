@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:29:01 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 18:43:00 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/25 19:34:56 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -72,14 +72,16 @@ int		prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 	if ((flags.width > flags.precision && flags.precision >
 			ft_strlen(c_dig.num)) || flags.precision >= ft_strlen(c_dig.num))
 	{
-		if (flags.width > flags.precision)
-			ft_putncaract(' ', (flags.width - flags.precision));
+		if (flags.width > flags.precision && c_dig.diff != 0)
+			ft_putncaract(' ', (flags.width - flags.precision - flags.space));
 		if (flags.width > flags.precision)
 			c_dig.yn++;
 		digit_lower_0(digit, &c_dig, flags, 0);
 		ft_putncaract('0', (flags.precision - ft_strlen(c_dig.negnum)));
 		ft_putstr(c_dig.negnum);
 		free_digit(digit, &c_dig);
+		if (flags.width > flags.precision)
+			return (flags.width);
 		if (!(flags.width > flags.precision))
 			return (flags.precision + flags.space + c_dig.yn);
 		return (flags.width + flags.space - c_dig.len + c_dig.yn);

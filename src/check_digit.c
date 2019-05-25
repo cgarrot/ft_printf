@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:42:56 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/21 10:53:24 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/25 19:33:23 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -37,6 +37,7 @@ char	*make_str(long long digit, t_flags flags, char *str,
 			str = ft_hhtoa(digit);
 		else
 			str = ft_itoa(digit);
+			c_dig->str = ft_itoa(-digit);
 	}
 	c_dig->len = ft_strlen(str);
 	return (str);
@@ -53,6 +54,7 @@ void	is_space(long long digit, t_flags *flags, t_check_digit *c_dig)
 		flags->space = 0;
 		c_dig->space = 1;
 	}
+	c_dig->diff = ((int)ft_strlen(c_dig->num) - flags->precision);
 }
 
 void	is_flag_u(long long digit, t_flags *flags, t_check_digit *c_dig)
@@ -72,10 +74,10 @@ int		check_p_w_digit(long long digit, t_flags flags)
 	if (!(c_dig.num = make_str(digit, flags, c_dig.num, &c_dig)))
 		return (0);
 	is_space(digit, &flags, &c_dig);
-	if (flags.plus)
-		c_dig.ret = is_digit_plus(digit, flags, c_dig);
-	else if (flags.minus)
+	if (flags.minus)
 		c_dig.ret = is_digit_minus(digit, flags, c_dig);
+	else if (flags.plus)
+		c_dig.ret = is_digit_plus(digit, flags, c_dig);
 	else
 	{
 		if (flags.precision)
@@ -86,6 +88,7 @@ int		check_p_w_digit(long long digit, t_flags flags)
 			c_dig.ret = put_ret(c_dig.num, ft_strlen(c_dig.num) + flags.space);
 	}
 	ft_strdel(&c_dig.num);
+	ft_strdel(&c_dig.str);
 	if (c_dig.ret != 0)
 		return (c_dig.ret);
 	return (flags.space + 0);
