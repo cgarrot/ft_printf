@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/25 19:31:53 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/26 17:27:50 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -217,6 +217,7 @@ int					is_hexa_no_op(unsigned long long dec, t_flags flags,
 		t_check_hexa c_hexa);
 
 int					check_p_w_ptr(void *ptr, t_flags flags);
+int					check_p_w_percent(t_flags flags);
 
 int					ft_printf(const char *format,
 			...) __attribute__((format(printf,1,2)));

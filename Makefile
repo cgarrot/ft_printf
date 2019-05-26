@@ -6,7 +6,7 @@
 #    By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/10/10 19:59:22 by cgarrot      #+#   ##    ##    #+#        #
-#    Updated: 2019/05/05 18:17:10 by cgarrot     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/05/26 17:48:26 by cgarrot     ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -32,6 +32,7 @@ FILES = src/check_caract\
 		src/check_octa\
 		src/check_octa_param\
 		src/check_pointer\
+		src/check_percent\
 		src/check_str\
 		src/conversion\
 		src/ft_printf\

@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:42:56 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/25 19:33:23 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/26 17:52:40 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -37,7 +37,7 @@ char	*make_str(long long digit, t_flags flags, char *str,
 			str = ft_hhtoa(digit);
 		else
 			str = ft_itoa(digit);
-			c_dig->str = ft_itoa(-digit);
+		c_dig->str = ft_itoa(-digit);
 	}
 	c_dig->len = ft_strlen(str);
 	return (str);

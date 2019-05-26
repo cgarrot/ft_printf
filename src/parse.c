@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:45:53 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 20:12:59 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/26 17:49:23 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -16,7 +16,7 @@
 
 int			give_info(t_compt *compt, t_flags flags, va_list va, char *str)
 {
-	compt->j = compt->i;
+	compt->j = compt->i + 1;
 	flags.tmp = 0;
 	init(&flags);
 	while (!(ft_isflags(str[compt->j++])))
@@ -43,19 +43,6 @@ int			give_info(t_compt *compt, t_flags flags, va_list va, char *str)
 
 t_compt		print_car(t_compt compt, char *str)
 {
-	compt.m = 0;
-	if (str[compt.i] == '%' && str[compt.i + 1] == '%')
-	{
-		while (str[compt.i] == '%')
-		{
-			compt.i++;
-			compt.m++;
-		}
-		ft_putncaract('%', (compt.m / 2));
-		compt.nb += compt.m / 2;
-		if (!str[compt.i])
-			compt.i--;
-	}
 	if (str[compt.i] != '%')
 	{
 		ft_putchar(str[compt.i]);
@@ -66,10 +53,11 @@ t_compt		print_car(t_compt compt, char *str)
 
 int			if_is_true(char *str, t_flags flags, t_compt cpt)
 {
-	if (str[cpt.j] == '.' && ((ft_isdigit(str[cpt.j - 1]) ||
-		ft_isdigit(str[cpt.j + 1])) || str[cpt.j - 1] == ' ' || str[cpt.j - 1]
-		== '+' || str[cpt.j - 1] == '#' || (str[cpt.j - 1] == '%'
-		&& ft_isflags(str[cpt.j + 1]))))
+	if (str[cpt.j - 1] == '.' && ((ft_isdigit(str[cpt.j - 2]) ||
+		ft_isdigit(str[cpt.j])) || str[cpt.j - 2] == ' '
+		|| str[cpt.j - 2] == '+' || str[cpt.j - 2] == '#'
+		|| (str[cpt.j - 2] == '%'
+		&& ft_isflags(str[cpt.j]))))
 		return (1);
 	else
 		return (0);
@@ -77,27 +65,27 @@ int			if_is_true(char *str, t_flags flags, t_compt cpt)
 
 t_flags		compt_flags(t_flags flags, t_compt cpt, char *str)
 {
-	if (str[cpt.j] == '#' && flags.hashtag < 1)
+	if (str[cpt.j - 1] == '#' && flags.hashtag < 1)
 		flags.hashtag++;
-	if (str[cpt.j] == '+' && flags.plus < 1)
+	if (str[cpt.j - 1] == '+' && flags.plus < 1)
 		flags.plus++;
-	if (str[cpt.j] == '-' && flags.minus < 1)
+	if (str[cpt.j - 1] == '-' && flags.minus < 1)
 		flags.minus++;
-	if (str[cpt.j] == '0' && flags.zero < 1 &&
-			!ft_isflags(str[cpt.j + 1]) && !ft_isdigit(str[cpt.j - 1]))
+	if (str[cpt.j - 1] == '0' && flags.zero < 1 &&
+			!ft_isflags(str[cpt.j]) && !ft_isdigit(str[cpt.j - 2]))
 		flags.zero++;
 	if (if_is_true(str, flags, cpt))
 	{
 		flags.point++;
-		flags.tmp = cpt.j;
+		flags.tmp = cpt.j - 1;
 	}
-	if (str[cpt.j] == ' ' && flags.space < 1)
+	if (str[cpt.j - 1] == ' ' && flags.space < 1)
 		flags.space++;
-	if (str[cpt.j] == 'l' && flags.l < 2)
+	if (str[cpt.j - 1] == 'l' && flags.l < 2)
 		flags.l++;
-	if (str[cpt.j] == 'h' && flags.h < 2)
+	if (str[cpt.j - 1] == 'h' && flags.h < 2)
 		flags.h++;
-	if (str[cpt.j] == 'L' && flags.ll < 1)
+	if (str[cpt.j - 1] == 'L' && flags.ll < 1)
 		flags.ll++;
 	return (flags);
 }
@@ -112,8 +100,7 @@ int			parse(char *str, va_list va)
 	while (str[++compt.i])
 	{
 		compt = print_car(compt, str);
-		if (str[compt.i] == '%' && (str[compt.i + 1] != '%' &&
-					str[compt.i + 1] != '\0'))
+		if (str[compt.i] == '%' && str[compt.i + 1] != '\0')
 			if (!(give_info(&compt, flags, va, str)))
 				return (0);
 	}

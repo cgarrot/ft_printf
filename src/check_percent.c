@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   utils3.c                                         .::    .:/ .      .::   */
+/*   check_percent.c                                  .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/05/05 18:02:06 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 17:48:38 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Created: 2019/05/26 17:47:01 by cgarrot      #+#   ##    ##    #+#       */
+/*   Updated: 2019/05/26 17:47:53 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
 
-char	*octa_zero(char *seg)
+int		check_p_w_percent(t_flags flags)
 {
-	seg = ft_strnew(1);
-	seg[0] = 48;
-	return (seg);
-}
-
-int		ret_int(unsigned long long n, int base)
-{
-	int		j;
-
-	j = 0;
-	while (n != 0)
+	if (flags.width)
 	{
-		n = n / base;
-		j++;
+		if (flags.minus)
+		{
+			ft_putchar('%');
+			if (flags.zero)
+				ft_putncaract('0', flags.width - 1);
+			else
+				ft_putncaract(' ', flags.width - 1);
+			return (flags.width);
+		}
+		else
+		{
+			if (flags.zero)
+				ft_putncaract('0', flags.width - 1);
+			else
+				ft_putncaract(' ', flags.width - 1);
+			ft_putchar('%');
+			return (flags.width);
+		}
 	}
-	return (j);
+	else
+		ft_putchar('%');
+	return (1);
 }
