@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:07:47 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 16:37:06 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/26 18:34:14 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -59,11 +59,23 @@ void	ft_putncaract(char c, int size)
 
 char	*cut_str_long(char *seg, t_flags flags)
 {
-	if (ft_strlen(seg) > 8 && !flags.l)
-		seg[8] = '\0';
-	if (flags.h == 1)
-		seg[4] = '\0';
-	if (flags.h == 2)
-		seg[2] = '\0';
+	if (flags.flag == 'x' || flags.flag == 'X')
+	{
+		if (flags.l && ft_strlen(seg) > 16)
+			seg[16] = '\0';
+		if (ft_strlen(seg) > 8 && !flags.l)
+			seg[8] = '\0';
+		if (flags.h == 1)
+			seg[4] = '\0';
+		if (flags.h == 2)
+			seg[2] = '\0';
+	}
+	else
+	{
+		if (flags.h == 1)
+			seg[6] = '\0';
+		if (flags.h == 2)
+			seg[3] = '\0';
+	}
 	return (seg);
 }

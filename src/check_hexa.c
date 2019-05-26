@@ -6,12 +6,19 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:42 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/05 19:04:20 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/26 17:57:49 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
+
+
+
+#include <stdio.h>
+
+
+
 
 void	puthash_init(t_flags flags, t_check_hexa *c_hexa)
 {
@@ -57,9 +64,10 @@ int		is_hexa_no_op(unsigned long long dec, t_flags flags,
 	if (flags.flag == 'x' || flags.flag == 'X')
 	{
 		if (!(dec == 0 && flags.point))
+		{
 			ft_putstrx(c_hexa.str, flags);
-		if (!(dec == 0 && flags.point))
-			return (ft_strlen(c_hexa.str) + c_hexa.exc);
+			return ((int)ft_strlen(c_hexa.str) + c_hexa.exc);
+		}
 	}
 	else
 	{
@@ -83,7 +91,7 @@ int		check_p_w_hexa(unsigned long long dec, t_flags flags)
 	int				nb;
 
 	c_hexa.exc = 0;
-	c_hexa.str = dectohexa(dec, flags);
+	c_hexa.str = dectohexa(dec, flags, 0);
 	if (flags.flag == 'X')
 		c_hexa.str = ft_strcapitalize(c_hexa.str);
 	c_hexa.size = flags.width - ft_strlen(c_hexa.str);

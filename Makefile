@@ -6,7 +6,7 @@
 #    By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+      #
 #                                                  #+#   #+    #+    #+#       #
 #    Created: 2018/10/10 19:59:22 by cgarrot      #+#   ##    ##    #+#        #
-#    Updated: 2019/05/26 17:48:26 by cgarrot     ###    #+. /#+    ###.fr      #
+#    Updated: 2019/05/26 18:46:09 by seanseau    ###    #+. /#+    ###.fr      #
 #                                                          /                   #
 #                                                         /                    #
 # **************************************************************************** #
@@ -42,6 +42,8 @@ FILES = src/check_caract\
 		src/utils2\
 		src/utils3\
 		src/utils_octa_hexa\
+		src/check_float\
+		src/utils_float\
 
 #----------------------------------COLOR---------------------------------------#
 

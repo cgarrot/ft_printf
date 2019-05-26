@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 17:27:50 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/26 18:46:54 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -29,6 +29,7 @@ typedef struct		s_flags
 	unsigned int		width;
 	unsigned int		precision;
 	unsigned int		percent;
+	unsigned int		L;
 	unsigned int		l;
 	unsigned int		h;
 	unsigned int		ll;
@@ -101,6 +102,20 @@ typedef struct		s_check_hexa
 	int					tmp;
 }					t_check_hexa;
 
+
+typedef struct s_check_float
+{
+	int					size;
+	char				*str;
+	char				*nbstr;
+	char				*decstr;
+	int					declen;
+	int					nblen;
+	int					hashtag;
+}				t_check_float;
+
+
+
 int					chose_flag(t_flags flags, va_list va, int nb);
 int					parse(char *str, va_list va);
 t_flags				compt_flags(t_flags flags, t_compt compt, char *str);
@@ -130,7 +145,7 @@ void				free_digit(long long digit, t_check_digit *c_dig);
 
 char				*dectoocta(unsigned long n, t_flags flags);
 void				ft_putstro(char *str, t_flags flags);
-char				*dectohexa(unsigned long long n, t_flags flags);
+char				*dectohexa(unsigned long long n, t_flags flags, int i);
 void				ft_putstrx(char *str, t_flags flags);
 void				ft_puthash(t_flags flags);
 int					ret_int(unsigned long long n, int base);
@@ -218,6 +233,14 @@ int					is_hexa_no_op(unsigned long long dec, t_flags flags,
 
 int					check_p_w_ptr(void *ptr, t_flags flags);
 int					check_p_w_percent(t_flags flags);
+
+//%f
+int				check_p_w_float(long double dec, t_flags flags);
+char			*ft_ftoa_decimal(int decpart, char *buf, int pos);
+
+//utils float
+char			*ft_ftoa(long double f, char *seg, t_flags flags);
+char			*ft_decpart(long double f, t_flags flags, int zer);
 
 int					ft_printf(const char *format,
 			...) __attribute__((format(printf,1,2)));

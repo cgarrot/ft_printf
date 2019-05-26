@@ -5,7 +5,7 @@
 int main(void)
 {
 	/*ft_printf("[%d]\n", ft_printf("% +d\n", 42));
-	printf("[%d]\n", printf("% +d\n", 42));*/
+	printf("[%d]\n", printf("% +d\n", 42));*//*
 	ft_printf("[%d]\n", ft_printf("%%\n"));
 	printf("[%d]\n", printf("%%\n"));
 	ft_printf("[%d]\n", ft_printf("%03.5%\n"));
@@ -18,5 +18,9 @@ int main(void)
 	printf("[%d]\n", printf("%%\n", "test"));
 	ft_printf("[%d]\n", ft_printf("%   %\n", "test"));
 	printf("[%d]\n", printf("%   %\n", "test"));
+printf("\n");*/
+	printf("[%d]\n", ft_printf("%15.4d", 424242));
+	printf("[%d]\n", printf("%15.4d", 424242));
+	printf("\n");
 	return (0);
 }
