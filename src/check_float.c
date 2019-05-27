@@ -6,7 +6,7 @@
 /*   By: seanseau <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/23 11:28:43 by seanseau     #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/23 16:39:26 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 17:35:08 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -43,21 +43,17 @@ void	get_parts(t_check_float *c_float, t_flags flags, int dec)
 int		check_p_w_float(long double dec, t_flags flags)
 {
 	t_check_float	c_float;
-	char	*zob;
-	zob = ft_strnew(0);
-	int i;
-	long double decimal;
+	char			*zob;
+	int				i;
+	long double		decimal;
 
 	i = flags.precision;
 	c_float.str = ft_strnew(0);
 	c_float.str = ft_ftoa(dec, c_float.str, flags);
 	zob = c_float.str;
 	decimal = dec;
-		//printf("str : [%s]\n", c_float.str);
-
 	get_parts(&c_float, flags, dec);
 	c_float.str = zob;
-//printf("str : [%s]\n", zob);
 	if (c_float.size < 0)
 		c_float.size = 0;
 	if (flags.width && !flags.precision)
@@ -141,18 +137,12 @@ int		check_p_w_float(long double dec, t_flags flags)
 				return (8 + flags.plus);
 			}
 			ft_putncaract(' ', c_float.size);
-			//printf("%s, %s\n", c_float.nbstr, c_float.decstr);
 			ft_putstr(c_float.str);
 		}
 		return (flags.width);
 	}
-
-
-
 	if (flags.precision && !flags.width)
 	{
-
-		//i = flags.precision;
 		while (i != 0)
 		{
 			decimal *= 10.00;
@@ -160,30 +150,20 @@ int		check_p_w_float(long double dec, t_flags flags)
 		}
 		decimal = decimal - (int)dec;
 		decimal = (decimal * 10.00);
-		//printf("c_float.str |%s|\n", c_float.str);
-		//printf("len|%ld|\n", ft_strlen(c_float.str));
-		//printf("nblen : %d\n", c_float.nblen);
 		if ((int)decimal >= 5 && c_float.str[ft_strlen(c_float.str) - 1] != 48)
 		{
 			if ((int)decimal != 9)
 			{
-				printf("iIMPORTANT ! duzob c_float.str[] : %c\n", c_float.str[ft_strlen(c_float.str) - 1]);
 				if (c_float.str[ft_strlen(c_float.str) - 1] != 48 &&
 						c_float.str[ft_strlen(c_float.str) - 1] != '9')
 					c_float.str[c_float.nblen + flags.precision] += 1;
-				//else if (flags.precision == 1)
-				//	c_float.str[c_float.nblen + flags.precision] += 1;
 			}
 		}
-
-
-			
-			ft_putncaract('+', flags.plus);
-			if (flags.plus == 0)
-				ft_putncaract(' ', flags.space);
+		ft_putncaract('+', flags.plus);
+		if (flags.plus == 0)
+			ft_putncaract(' ', flags.space);
 		if (flags.precision >= ft_strlen(c_float.decstr))
 		{
-
 			if (dec == 0.0)
 			{
 				ft_putstr(c_float.nbstr);
@@ -197,7 +177,6 @@ int		check_p_w_float(long double dec, t_flags flags)
 		else
 		{
 			ft_putstr(c_float.str);
-
 			if (dec == 0.0)
 				ft_putncaract('0', flags.precision);
 			return (c_float.nblen + 1 + flags.precision + flags.plus);
@@ -205,14 +184,9 @@ int		check_p_w_float(long double dec, t_flags flags)
 	}
 	if (flags.precision && flags.width)
 	{
-		//printf("%Lf\n", dec);
-
 		decimal = (flags.precision * (decimal * 10.00));
 		decimal = decimal - (int)decimal;
 		decimal = (decimal * 10.00);
-		//printf("%Lf\n", dec);
-		//printf("skurt :  %s\n", c_float.str);
-		//printf("zob : |%ld|\n", ft_strlen(c_float.str));
 		if ((int)decimal >= 5 && c_float.str[ft_strlen(c_float.str) - 1] != 48)
 		{
 			if ((int)decimal != 9)
@@ -220,19 +194,14 @@ int		check_p_w_float(long double dec, t_flags flags)
 				if (c_float.str[ft_strlen(c_float.str) - 1] != 48 &&
 						c_float.str[ft_strlen(c_float.str) - 1] != '9')
 					c_float.str[c_float.nblen + flags.precision] += 1;
-				//else if (flags.precision == 1)
-				//	c_float.str[c_float.nblen + flags.precision] += 1;
 			}
 		}
 	}
-		if (dec > 0)
-			ft_putncaract('+', flags.plus);
-		//ft_putstr(c_float.nbstr);
-		//ft_putstr(c_float.decstr);
-
-		ft_putstr(c_float.str);
-		ft_putncaract('0', flags.precision - ft_strlen(c_float.decstr) - flags.plus);
-		return (ft_strlen(c_float.nbstr) + c_float.declen + flags.plus + 1);
+	if (dec > 0)
+		ft_putncaract('+', flags.plus);
+	ft_putstr(c_float.str);
+	ft_putncaract('0', flags.precision - ft_strlen(c_float.decstr) - flags.plus);
+	return (ft_strlen(c_float.nbstr) + c_float.declen + flags.plus + 1);
 	if (dec > 0)
 		ft_putncaract('+', flags.plus);
 	ft_putstr(c_float.str);

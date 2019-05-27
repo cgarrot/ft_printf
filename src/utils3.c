@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/05/05 18:02:06 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 10:36:41 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:57:59 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -42,4 +42,25 @@ int		ft_is_in_string(char c)
 			|| c == 'h' || c == 'L')
 		return (1);
 	return (0);
+}
+
+void	put_free(long long digit, t_flags flags, t_check_digit *c_dig)
+{
+	digit_lower_0(digit, c_dig, flags, 0);
+	ft_putncaract('0', (flags.precision - ft_strlen(c_dig->negnum)));
+	ft_putstr(c_dig->negnum);
+	free_digit(digit, c_dig);
+}
+
+int		ret_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
+{
+	if (c_dig.yn && (flags.width > c_dig.len) && flags.precision < flags.width)
+		return (flags.width + flags.space);
+	if (digit < 0 && c_dig.len < flags.precision)
+		return (flags.precision + 1);
+	if (c_dig.len < flags.precision)
+		return (flags.precision);
+	else if (digit < 0)
+		return (c_dig.len + 1);
+	return (c_dig.len);
 }

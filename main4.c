@@ -19,16 +19,16 @@ int main(void)
 printf("\n");
 	
 	ft_printf("[%d]\n", ft_printf("{%  P"));
-	printf("[%d]\n", printf("{%  P"));
-	ft_printf("[%d]\n", ft_printf("% lLhqwerty"));
-	printf("[%d]\n", printf("% lLhqwerty"));
+	printf("[%d]\n", printf("{%  P"));*/
+	ft_printf("[%d]\n", ft_printf("% hLLqwerty"));
+	printf("[%d]\n", printf("% hLLqwerty"));
 	ft_printf("[%d]\n", ft_printf("% 45Zoooooo"));
 	printf("[%d]\n", printf("% 45Zoooooo"));
 	
-	printf("\n[%d]\n", printf("%0-66Ykkkk"));
-	printf("\n[%d]\n", printf("%0-66ckkkk", 'Z'));
+	printf("\n[%d]\n", printf("%-66Ykkkk"));
+	printf("\n[%d]\n", printf("%-66ckkkk", 'Z'));
 	printf("\n");
-	*/
+	
 
 	/*ft_printf("[%d]\n", ft_printf("%hhu, %hhu", 0, UCHAR_MAX + 42));
 	printf("[%d]\n", printf("%hhu, %hhu", 0, UCHAR_MAX + 42));*/
@@ -57,8 +57,8 @@ printf("\n");
 	ft_printf("[%d]\n", ft_printf("%15.4d", 424242));
 	printf("[%d]\n", printf("%15.4d", 424242));
 	ft_printf("[%d]\n", ft_printf("{%+03d}", 0));
-	printf("[%d]\n", printf("{%+03d}", 0));*/
+	printf("[%d]\n", printf("{%+03d}", 0));
 	ft_printf("[%d]\n", ft_printf("%4.15d", -42));
-	printf("[%d]\n", printf("%4.15d", -42));
+	printf("[%d]\n", printf("%4.15d", -42));*/
 	return (0);
 }

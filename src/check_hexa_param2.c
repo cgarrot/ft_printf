@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/19 12:42:09 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 16:24:11 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 17:00:28 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -83,7 +83,7 @@ int		is_hexa_width_upper_prec(unsigned long long dec, t_flags flags,
 		else
 			ft_putncaract(' ', flags.width - ft_strlen(c_hexa->str));
 		ft_putstrx(c_hexa->str, flags);
-		if (flags.width > ft_strlen(c_hexa->str)) // changeay
+		if (flags.width > ft_strlen(c_hexa->str))
 			return (flags.width);
 		else
 			return (ft_strlen(c_hexa->str) + c_hexa->exc);

@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 14:19:48 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 17:21:51 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -104,7 +104,7 @@ typedef struct		s_check_hexa
 }					t_check_hexa;
 
 
-typedef struct s_check_float
+typedef struct		s_check_float
 {
 	int					size;
 	char				*str;
@@ -113,7 +113,7 @@ typedef struct s_check_float
 	int					declen;
 	int					nblen;
 	int					hashtag;
-}				t_check_float;
+}					t_check_float;
 
 
 
@@ -184,6 +184,10 @@ int					width_digit_no_op(long long digit, t_flags flags,
 		t_check_digit c_dig);
 void				is_flag_u(long long digit, t_flags *flags,
 		t_check_digit *c_dig);
+void				put_free(long long digit, t_flags flags,
+		t_check_digit *c_dig);
+int					ret_digit_no_op(long long digit, t_flags flags,
+		t_check_digit c_dig);
 
 int					check_p_w_caract(int c, t_flags flags);
 
@@ -206,6 +210,8 @@ int					is_octa_width_prec(unsigned long dec, t_flags flags,
 int					is_octa_no_width_prec(unsigned long dec, t_flags flags,
 		t_check_octa *c_octa);
 int					check_p_w_octa(unsigned long dec, t_flags flags);
+int					is_octa_else(unsigned long dec, t_flags flags,
+		t_check_octa *c_octa);
 
 int					check_p_w_hexa(unsigned long long dec, t_flags flags);
 void				puthash_init(t_flags flags, t_check_hexa *c_hexa);

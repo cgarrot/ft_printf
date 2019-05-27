@@ -6,7 +6,7 @@
 /*   By: seanseau <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/23 15:31:36 by seanseau     #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/22 16:10:11 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 18:10:05 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -28,7 +28,7 @@ int		ft_countzeros(long double f)
 	return (zer);
 }
 
-char	*ft_decpart(long double f, t_flags flags, int zer) //LOL IMPOSSIBLE A NORMER SINON T 1 GOD Y'A TROP DE MALLOC TOUT PETES
+char	*ft_decpart(long double f, t_flags flags, int zer)
 {
 	char	*seg;
 	int		dp;

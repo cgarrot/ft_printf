@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:29:01 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 16:35:15 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 17:00:03 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -69,16 +69,15 @@ int		is_digit_minus(long long digit, t_flags flags, t_check_digit c_dig)
 
 int		prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 {
-	if (flags.width > flags.precision && flags.precision >= ft_strlen(c_dig.num))
+	if (flags.width > flags.precision &&
+			flags.precision >= ft_strlen(c_dig.num))
 	{
 		if (flags.width > flags.precision && c_dig.diff != 0)
-			ft_putncaract(' ', (flags.width - flags.precision - flags.space - c_dig.neg));
+			ft_putncaract(' ', (flags.width - flags.precision
+						- flags.space - c_dig.neg));
 		if (flags.width > flags.precision)
 			c_dig.yn++;
-		digit_lower_0(digit, &c_dig, flags, 0);
-		ft_putncaract('0', (flags.precision - ft_strlen(c_dig.negnum)));
-		ft_putstr(c_dig.negnum);
-		free_digit(digit, &c_dig);
+		put_free(digit, flags, &c_dig);
 		if (flags.width > flags.precision)
 			return (flags.width);
 		if (!(flags.width > flags.precision))
@@ -89,19 +88,8 @@ int		prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 		ft_putncaract(' ', (flags.width - ft_strlen(c_dig.num)));
 	if ((flags.precision > 1) && (flags.precision < ft_strlen(c_dig.num)))
 		c_dig.yn++;
-	digit_lower_0(digit, &c_dig, flags, 0);
-	ft_putncaract('0', (flags.precision - ft_strlen(c_dig.negnum)));
-	ft_putstr(c_dig.negnum);
-	free_digit(digit, &c_dig);
-	if (c_dig.yn && (flags.width > c_dig.len) && flags.precision < flags.width)
-		return (flags.width + flags.space);
-	if (digit < 0 && c_dig.len < flags.precision)
-		return (flags.precision + 1);
-	if (c_dig.len < flags.precision)
-		return (flags.precision);
-	else if (digit < 0)
-		return (c_dig.len + 1);
-	return (c_dig.len);
+	put_free(digit, flags, &c_dig);
+	return (ret_digit_no_op(digit, flags, c_dig));
 }
 
 int		width_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)

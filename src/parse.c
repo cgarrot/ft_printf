@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:45:53 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 10:38:50 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:49:14 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -18,7 +18,7 @@ int			is_no_flag(t_compt *compt, t_flags *flags, char *str)
 {
 	if (!ft_is_in_string(str[compt->j]))
 	{
-		if (str[compt-> j - 1] == ('l' | 'h' | 'L'))
+		if (ft_strchr("lhL", str[compt->j - 1]))
 			compt->i = compt->j;
 		else
 			compt->i = compt->j - 1;
