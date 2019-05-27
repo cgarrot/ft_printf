@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 18:46:54 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 14:19:48 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -78,6 +78,7 @@ typedef struct		s_check_digit
 	char				*str;
 	int					len;
 	int					yn;
+	int					neg;
 	int					unplus;
 	int					space;
 	long long			negdig;
@@ -121,7 +122,6 @@ int					parse(char *str, va_list va);
 t_flags				compt_flags(t_flags flags, t_compt compt, char *str);
 int					give_info(t_compt *compt, t_flags flags,
 		va_list va, char *str);
-t_compt				print_car(t_compt compt, char *str);
 int					chose_for_digit(t_flags flags, va_list va,
 		int nb, t_args args);
 int					chose_other_digit(t_flags flags, va_list va,
@@ -142,6 +142,7 @@ int					put_ret(char *str, int len);
 void				put_init(char *str, t_check_octa *c_octa);
 char				*cut_str_long(char *seg, t_flags flags);
 void				free_digit(long long digit, t_check_digit *c_dig);
+int					ft_is_in_string(char c);
 
 char				*dectoocta(unsigned long n, t_flags flags);
 void				ft_putstro(char *str, t_flags flags);
@@ -234,11 +235,9 @@ int					is_hexa_no_op(unsigned long long dec, t_flags flags,
 int					check_p_w_ptr(void *ptr, t_flags flags);
 int					check_p_w_percent(t_flags flags);
 
-//%f
 int				check_p_w_float(long double dec, t_flags flags);
 char			*ft_ftoa_decimal(int decpart, char *buf, int pos);
 
-//utils float
 char			*ft_ftoa(long double f, char *seg, t_flags flags);
 char			*ft_decpart(long double f, t_flags flags, int zer);
 

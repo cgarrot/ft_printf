@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:11 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 12:19:55 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:27:49 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -59,7 +59,7 @@ int		is_octa_width_up_prec(unsigned long dec, t_flags flags,
 		ft_putstro(c_octa->str, flags);
 		if (flags.width > ft_strlen(c_octa->str))
 			return (flags.width);
-		return (flags.width + c_octa->surplus);
+		return (ft_strlen(c_octa->str));
 	}
 	if (flags.hashtag && c_octa->surplus != 1 && dec != 0)
 		put_init("0", c_octa);

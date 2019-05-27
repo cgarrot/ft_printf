@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:23:07 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 18:30:59 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:06:36 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -82,7 +82,7 @@ char	*dectoocta(unsigned long n, t_flags flags)
 	j = ret_int(n, 8);
 	if (!(seg = malloc(sizeof(char) * j + 1)))
 		return (NULL);
-	seg[j + 1] = '\0';
+	seg[j] = '\0';
 	while (n != 0)
 	{
 		seg[i] = 48 + (n % 8);

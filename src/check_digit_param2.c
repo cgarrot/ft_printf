@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:29:01 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/25 19:34:56 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:35:15 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -54,7 +54,7 @@ int		is_digit_minus(long long digit, t_flags flags, t_check_digit c_dig)
 	}
 	if (flags.precision < ft_strlen(c_dig.num))
 	{
-		digit_upper_0(digit, &c_dig, 2);
+		ft_putstr(c_dig.num);
 		if (flags.width > flags.precision)
 		{
 			ft_putncaract(' ', (flags.width - ft_strlen(c_dig.num) + c_dig.yn));
@@ -69,11 +69,10 @@ int		is_digit_minus(long long digit, t_flags flags, t_check_digit c_dig)
 
 int		prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 {
-	if ((flags.width > flags.precision && flags.precision >
-			ft_strlen(c_dig.num)) || flags.precision >= ft_strlen(c_dig.num))
+	if (flags.width > flags.precision && flags.precision >= ft_strlen(c_dig.num))
 	{
 		if (flags.width > flags.precision && c_dig.diff != 0)
-			ft_putncaract(' ', (flags.width - flags.precision - flags.space));
+			ft_putncaract(' ', (flags.width - flags.precision - flags.space - c_dig.neg));
 		if (flags.width > flags.precision)
 			c_dig.yn++;
 		digit_lower_0(digit, &c_dig, flags, 0);
@@ -86,14 +85,23 @@ int		prec_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 			return (flags.precision + flags.space + c_dig.yn);
 		return (flags.width + flags.space - c_dig.len + c_dig.yn);
 	}
-	if ((flags.precision < 1) && (flags.precision < ft_strlen(c_dig.num)))
+	if ((flags.precision > 1) && (flags.precision < ft_strlen(c_dig.num)))
 		ft_putncaract(' ', (flags.width - ft_strlen(c_dig.num)));
-	if ((flags.precision < 1 && (flags.precision < ft_strlen(c_dig.num))))
+	if ((flags.precision > 1) && (flags.precision < ft_strlen(c_dig.num)))
 		c_dig.yn++;
-	ft_putstr(c_dig.num);
-	if ((c_dig.yn && (flags.precision < ft_strlen(c_dig.num))))
+	digit_lower_0(digit, &c_dig, flags, 0);
+	ft_putncaract('0', (flags.precision - ft_strlen(c_dig.negnum)));
+	ft_putstr(c_dig.negnum);
+	free_digit(digit, &c_dig);
+	if (c_dig.yn && (flags.width > c_dig.len) && flags.precision < flags.width)
 		return (flags.width + flags.space);
-	return (ft_strlen(c_dig.num));
+	if (digit < 0 && c_dig.len < flags.precision)
+		return (flags.precision + 1);
+	if (c_dig.len < flags.precision)
+		return (flags.precision);
+	else if (digit < 0)
+		return (c_dig.len + 1);
+	return (c_dig.len);
 }
 
 int		width_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
@@ -101,8 +109,9 @@ int		width_digit_no_op(long long digit, t_flags flags, t_check_digit c_dig)
 	if (!flags.point && flags.zero && (flags.width > ft_strlen(c_dig.num)))
 	{
 		digit_lower_0(digit, &c_dig, flags, 0);
-		ft_putncaract('0', (flags.width - ft_strlen(c_dig.negnum) - c_dig.yn));
-		return (put_ret(c_dig.negnum, flags.width + flags.space));
+		ft_putncaract('0', (flags.width - ft_strlen(c_dig.negnum)
+					- c_dig.yn - flags.space));
+		return (put_ret(c_dig.negnum, flags.width));
 	}
 	else if ((!flags.point && (flags.width > ft_strlen(c_dig.num)))
 			|| ((flags.point && (flags.width >= ft_strlen(c_dig.num)))))

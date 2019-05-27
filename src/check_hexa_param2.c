@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/19 12:42:09 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/25 19:51:56 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:24:11 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -72,7 +72,7 @@ int		is_hexa_width_upper_prec(unsigned long long dec, t_flags flags,
 {
 	if (flags.precision < ft_strlen(c_hexa->str))
 	{
-		if (flags.hashtag)
+		if (flags.hashtag || flags.flag == 'p')
 		{
 			ft_putncaract(' ', flags.width - ft_strlen(c_hexa->str) - 2);
 			if (dec != 0 && c_hexa->exc != 2)
@@ -94,9 +94,9 @@ int		is_hexa_width_upper_prec(unsigned long long dec, t_flags flags,
 int		is_hexa_width_prec(unsigned long long dec, t_flags flags,
 		t_check_hexa *c_hexa)
 {
-	if (flags.flag == 'p' && dec != 0)
+	if (flags.flag == 'p' && dec != 0 && flags.width < ft_strlen(c_hexa->str))
 		ft_puthash(flags);
-	if (flags.flag == 'p' && dec != 0)
+	if (flags.flag == 'p' && dec != 0 && flags.width < ft_strlen(c_hexa->str))
 		c_hexa->exc = 2;
 	if (flags.width > flags.precision)
 		return (is_hexa_width_upper_prec(dec, flags, c_hexa));

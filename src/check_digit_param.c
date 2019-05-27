@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/18 10:26:37 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 17:43:49 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 15:26:25 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -22,12 +22,11 @@ void	digit_upper_0(long long digit, t_check_digit *c_dig, int chose)
 	{
 		if (digit == 0)
 			c_dig->yn++;
-		else
-			ft_putstr(c_dig->num);
+		ft_putstr(c_dig->num);
 	}
 	if (chose == 3)
 	{
-		if (digit > 0)
+		if (digit >= 0)
 			ft_putchar('+');
 		if (digit < 0)
 			ft_putchar('-');
@@ -105,6 +104,8 @@ int		digit_plus_width(long long digit, t_flags flags, t_check_digit c_dig)
 		ft_putncaract(' ', (flags.width - ft_strlen(c_dig.num) - c_dig.yn));
 		return (flags.space + flags.width);
 	}
+	if (digit == 0)
+		c_dig.yn--;
 	if (!flags.minus && flags.plus)
 		return (flags.space + flags.width + ft_strlen(c_dig.num) - c_dig.yn);
 	return (flags.space + flags.width - c_dig.yn);

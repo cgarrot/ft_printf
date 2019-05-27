@@ -6,19 +6,12 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:43:42 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 17:57:49 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:16:56 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "../includes/ft_printf.h"
-
-
-
-#include <stdio.h>
-
-
-
 
 void	puthash_init(t_flags flags, t_check_hexa *c_hexa)
 {

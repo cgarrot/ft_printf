@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:42:56 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 17:52:40 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 16:28:58 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -54,7 +54,16 @@ void	is_space(long long digit, t_flags *flags, t_check_digit *c_dig)
 		flags->space = 0;
 		c_dig->space = 1;
 	}
-	c_dig->diff = ((int)ft_strlen(c_dig->num) - flags->precision);
+	if (digit < 0)
+	{
+		c_dig->diff = ((int)ft_strlen(c_dig->num) - flags->precision - 1);
+		c_dig->neg = 1;
+	}
+	else
+	{
+		c_dig->diff = ((int)ft_strlen(c_dig->num) - flags->precision);
+		c_dig->neg = 0;
+	}
 }
 
 void	is_flag_u(long long digit, t_flags *flags, t_check_digit *c_dig)
