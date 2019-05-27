@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:45:53 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/26 17:49:23 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/27 10:38:50 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -14,13 +14,28 @@
 #include "../includes/ft_printf.h"
 #include <stdio.h>
 
+int			is_no_flag(t_compt *compt, t_flags *flags, char *str)
+{
+	if (!ft_is_in_string(str[compt->j]))
+	{
+		if (str[compt-> j - 1] == ('l' | 'h' | 'L'))
+			compt->i = compt->j;
+		else
+			compt->i = compt->j - 1;
+		return (1);
+	}
+	*flags = compt_flags(*flags, *compt, str);
+	return (0);
+}
+
 int			give_info(t_compt *compt, t_flags flags, va_list va, char *str)
 {
 	compt->j = compt->i + 1;
 	flags.tmp = 0;
 	init(&flags);
 	while (!(ft_isflags(str[compt->j++])))
-		flags = compt_flags(flags, *compt, str);
+		if ((is_no_flag(compt, &flags, str) == 1))
+			return (1);
 	flags.flag = str[compt->j - 1];
 	if (!(compt->num = ft_strsub(str, compt->i, (compt->j - compt->i))))
 		return (0);
@@ -39,16 +54,6 @@ int			give_info(t_compt *compt, t_flags flags, va_list va, char *str)
 	ft_strdel(&compt->num);
 	ft_strdel(&compt->num2);
 	return (1);
-}
-
-t_compt		print_car(t_compt compt, char *str)
-{
-	if (str[compt.i] != '%')
-	{
-		ft_putchar(str[compt.i]);
-		compt.nb++;
-	}
-	return (compt);
 }
 
 int			if_is_true(char *str, t_flags flags, t_compt cpt)
@@ -99,7 +104,11 @@ int			parse(char *str, va_list va)
 	compt.i = -1;
 	while (str[++compt.i])
 	{
-		compt = print_car(compt, str);
+		if (str[compt.i] != '%')
+		{
+			ft_putchar(str[compt.i]);
+			compt.nb++;
+		}
 		if (str[compt.i] == '%' && str[compt.i + 1] != '\0')
 			if (!(give_info(&compt, flags, va, str)))
 				return (0);
