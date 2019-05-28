@@ -6,7 +6,7 @@
 /*   By: seanseau <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/23 11:28:43 by seanseau     #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 17:35:08 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/05/28 18:57:40 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -40,6 +40,149 @@ void	get_parts(t_check_float *c_float, t_flags flags, int dec)
 	}
 }
 
+void	print_width_noprec_nopoint(t_flags flags, int pre)
+{
+	if (pre == 1)
+		ft_putncaract(' ', flags.width - 8 - flags.plus);
+	ft_putncaract('+', flags.plus);
+	if (pre == 2)
+		ft_putncaract(' ', flags.width - 8 - flags.plus);
+	ft_putstr("0.000000");
+	if (pre == 3)
+		ft_putncaract(' ', flags.width - 8 - flags.plus);
+}
+
+void	print_width_noprec_point_nul(t_flags flags)
+{
+	ft_putncaract('+', flags.plus);
+	ft_putchar('0');
+	ft_putncaract('.', flags.hashtag);
+}
+
+int		width_noprec_point_nul(t_flags flags)
+{
+	if (!flags.minus && !flags.zero)
+	{
+		ft_putncaract(' ', flags.width - 1 - flags.plus - flags.hashtag);
+		width_noprec_point_nul(flags);
+	}
+	else if (flags.minus)
+	{
+		width_noprec_point_nul(flags);
+		ft_putncaract(' ', flags.width - 1 - flags.plus - flags.hashtag);
+	}
+	else if (flags.zero)
+	{
+		ft_putncaract('+', flags.plus);
+		if (flags.width == 2)
+			ft_putncaract('0', flags.width - flags.plus - flags.hashtag + 1);
+		else if (flags.width == 1)
+			ft_putncaract('0', flags.width - flags.plus - flags.hashtag + 2);
+		else
+			ft_putncaract('0', flags.width - flags.plus - flags.hashtag);
+		ft_putncaract('.', flags.hashtag);
+	}
+	return (flags.width);
+}
+
+int		width_noprec_point(long double dec, t_flags flags,
+		t_check_float c_float)
+{
+	if (dec == 0.0)
+		print_width_noprec_point_nul(flags);
+	if (flags.minus)
+	{
+		ft_putncaract('+', flags.plus);
+		ft_putstr(c_float.nbstr);
+		ft_putncaract(' ', (flags.width - c_float.nblen - flags.plus));
+	}
+	else
+	{
+		ft_putncaract('+', flags.plus);
+		if (flags.zero)
+			ft_putncaract('0', flags.width - c_float.nblen -
+					flags.plus);
+		else
+			ft_putncaract(' ', flags.width - c_float.nblen -
+					flags.plus);
+		ft_putstr(c_float.nbstr);
+	}
+	return (flags.width + flags.hashtag + flags.plus);
+}
+
+int		width_noprec_nopoint(long double dec, t_flags flags,
+		t_check_float c_float)
+{
+	if (dec == 0.0 && flags.width > 8)
+	{
+		if (!flags.minus && !flags.hashtag && !flags.zero)
+			print_width_noprec_nopoint(flags, 1);
+		else if (flags.minus)
+			print_width_noprec_nopoint(flags, 3);
+		else if (flags.zero)
+			print_width_noprec_nopoint(flags, 2);
+		return (flags.width);
+	}
+	else if (dec == 0.0 && !(flags.width > 8))
+	{
+		print_width_noprec_nopoint(flags, 0);
+		return (8 + flags.plus);
+	}
+	ft_putncaract(' ', c_float.size);
+	ft_putstr(c_float.str);
+	return (flags.width);
+}
+
+int		float_nowidth_prec_sup_inf(long double dec, t_check_float c_float,
+		t_flags flags)
+{
+	if (flags.precision >= ft_strlen(c_float.decstr))
+	{
+		if (dec == 0.0)
+		{
+			ft_putstr(c_float.nbstr);
+			ft_putstr(c_float.decstr);
+		}
+		else
+			ft_putstr(c_float.str);
+		ft_putncaract('0', flags.precision - c_float.declen);
+		return (flags.precision + c_float.nblen - 1 + flags.plus);
+	}
+	else
+	{
+		ft_putstr(c_float.str);
+		if (dec == 0.0)
+			ft_putncaract('0', flags.precision);
+		return (c_float.nblen + 1 + flags.precision + flags.plus);
+	}
+	return (0);
+}
+
+int		float_nowidth_prec(long double dec, long double decimal, int i,
+		t_check_float c_float, t_flags flags)
+{
+	while (i != 0)
+	{
+		decimal *= 10.00;
+		i--;
+	}
+	decimal = decimal - (int)decimal;
+	decimal = (decimal * 10.00);
+	if ((int)decimal >= 5 && c_float.str[ft_strlen(c_float.str) - 1] != 48)
+	{
+		if ((int)decimal != 9)
+		{
+			if (c_float.str[ft_strlen(c_float.str) - 1] != 48 &&
+					c_float.str[ft_strlen(c_float.str) - 1] != '9')
+				c_float.str[c_float.nblen + flags.precision] += 1;
+		}
+	}
+	ft_putncaract('+', flags.plus);
+	if (flags.plus == 0)
+		ft_putncaract(' ', flags.space);
+	return (float_nowidth_prec_sup_inf(dec, c_float, flags));
+}
+
 int		check_p_w_float(long double dec, t_flags flags)
 {
 	t_check_float	c_float;
@@ -59,131 +202,15 @@ int		check_p_w_float(long double dec, t_flags flags)
 	if (flags.width && !flags.precision)
 	{
 		if (flags.point)
-		{
-			if (dec == 0.0)
-			{
-				if (!flags.minus && !flags.zero)
-				{
-					ft_putncaract(' ', flags.width - 1 - flags.plus - flags.hashtag);
-					ft_putncaract('+', flags.plus);
-					ft_putchar('0');
-					ft_putncaract('.', flags.hashtag);
-				}
-				else if (flags.minus)
-				{
-					ft_putncaract('+', flags.plus);
-					ft_putchar('0');
-					ft_putncaract('.', flags.hashtag);
-					ft_putncaract(' ', flags.width - 1 - flags.plus - flags.hashtag);
-				}
-				else if (flags.zero)
-				{
-					ft_putncaract('+', flags.plus);
-					if (flags.width == 2)
-						ft_putncaract('0', flags.width - flags.plus - flags.hashtag + 1);
-					else if (flags.width == 1)
-						ft_putncaract('0', flags.width - flags.plus - flags.hashtag + 2);
-					else
-						ft_putncaract('0', flags.width - flags.plus - flags.hashtag);
-					ft_putncaract('.', flags.hashtag);
-				}
-				return (flags.width);
-			}
-			if (flags.minus)
-			{
-				ft_putncaract('+', flags.plus);
-				ft_putstr(c_float.nbstr);
-				ft_putncaract(' ', (flags.width - c_float.nblen - flags.plus));
-			}
-			else
-			{
-				if (flags.zero)
-					ft_putncaract('0', flags.width - c_float.nblen - flags.plus);
-				else
-					ft_putncaract(' ', flags.width - c_float.nblen - flags.plus);
-				ft_putncaract('+', flags.plus);
-				ft_putstr(c_float.nbstr);
-			}
-			return (flags.width + flags.hashtag + flags.plus);
-		}
+			return (width_noprec_point(dec, flags, c_float));
 		if (!flags.point)
-		{
-			if (dec == 0.0 && flags.width > 8)
-			{
-				if (!flags.minus && !flags.hashtag && !flags.zero)
-				{
-					ft_putncaract(' ', flags.width - 8 - flags.plus);
-					ft_putncaract('+', flags.plus);
-					ft_putstr("0.000000");
-				}
-				else if (flags.minus)
-				{
-					ft_putncaract('+', flags.plus);
-					ft_putstr("0.000000");
-					ft_putncaract(' ', flags.width - 8 - flags.plus);
-				}
-				else if (flags.zero)
-				{
-					ft_putncaract('+', flags.plus);
-					ft_putncaract('0', flags.width - 8 - flags.plus);
-					ft_putstr("0.000000");
-				}
-				return (flags.width);
-			}
-			else if (dec == 0.0 && !(flags.width > 8))
-			{
-				ft_putncaract('+', flags.plus);
-				ft_putstr("0.000000");
-				return (8 + flags.plus);
-			}
-			ft_putncaract(' ', c_float.size);
-			ft_putstr(c_float.str);
-		}
-		return (flags.width);
+			return (width_noprec_nopoint(dec, flags, c_float));
 	}
 	if (flags.precision && !flags.width)
-	{
-		while (i != 0)
-		{
-			decimal *= 10.00;
-			i--;
-		}
-		decimal = decimal - (int)dec;
-		decimal = (decimal * 10.00);
-		if ((int)decimal >= 5 && c_float.str[ft_strlen(c_float.str) - 1] != 48)
-		{
-			if ((int)decimal != 9)
-			{
-				if (c_float.str[ft_strlen(c_float.str) - 1] != 48 &&
-						c_float.str[ft_strlen(c_float.str) - 1] != '9')
-					c_float.str[c_float.nblen + flags.precision] += 1;
-			}
-		}
-		ft_putncaract('+', flags.plus);
-		if (flags.plus == 0)
-			ft_putncaract(' ', flags.space);
-		if (flags.precision >= ft_strlen(c_float.decstr))
-		{
-			if (dec == 0.0)
-			{
-				ft_putstr(c_float.nbstr);
-				ft_putstr(c_float.decstr);
-			}
-			else
-				ft_putstr(c_float.str);
-			ft_putncaract('0', flags.precision - c_float.declen);
-			return (flags.precision + c_float.nblen - 1 + flags.plus);
-		}
-		else
-		{
-			ft_putstr(c_float.str);
-			if (dec == 0.0)
-				ft_putncaract('0', flags.precision);
-			return (c_float.nblen + 1 + flags.precision + flags.plus);
-		}
-	}
+		return (float_nowidth_prec(dec, decimal, i, c_float, flags));
 	if (flags.precision && flags.width)
 	{
+		printf("STR : |%s| && nbstr : |%s| && decstr : |%s|\n", c_float.str, c_float.nbstr, c_float.decstr);
 		decimal = (flags.precision * (decimal * 10.00));
 		decimal = decimal - (int)decimal;
 		decimal = (decimal * 10.00);
@@ -196,6 +223,7 @@ int		check_p_w_float(long double dec, t_flags flags)
 					c_float.str[c_float.nblen + flags.precision] += 1;
 			}
 		}
+
 	}
 	if (dec > 0)
 		ft_putncaract('+', flags.plus);
