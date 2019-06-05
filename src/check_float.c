@@ -5,8 +5,8 @@
 /*                                                 +:+:+   +:    +:  +:+:+    */
 /*   By: seanseau <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/04/23 11:28:43 by seanseau     #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/28 18:57:40 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/06/05 14:32:22 by seanseau     #+#   ##    ##    #+#       */
+/*   Updated: 2019/06/05 15:41:59 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -17,7 +17,7 @@
 void	get_parts(t_check_float *c_float, t_flags flags, int dec)
 {
 	c_float->nblen = 0;
-	while (c_float->str[c_float->nblen] != '.')
+	while (c_float->str[c_float->nblen] != '.' && c_float->str[c_float->nblen])
 		c_float->nblen++;
 	if (flags.hashtag)
 		c_float->nblen++;
@@ -186,17 +186,13 @@ int		float_nowidth_prec(long double dec, long double decimal, int i,
 int		check_p_w_float(long double dec, t_flags flags)
 {
 	t_check_float	c_float;
-	char			*zob;
 	int				i;
 	long double		decimal;
 
 	i = flags.precision;
-	c_float.str = ft_strnew(0);
-	c_float.str = ft_ftoa(dec, c_float.str, flags);
-	zob = c_float.str;
+	c_float.str = ft_ftoa(dec, flags.precision);
 	decimal = dec;
 	get_parts(&c_float, flags, dec);
-	c_float.str = zob;
 	if (c_float.size < 0)
 		c_float.size = 0;
 	if (flags.width && !flags.precision)
@@ -210,7 +206,7 @@ int		check_p_w_float(long double dec, t_flags flags)
 		return (float_nowidth_prec(dec, decimal, i, c_float, flags));
 	if (flags.precision && flags.width)
 	{
-		printf("STR : |%s| && nbstr : |%s| && decstr : |%s|\n", c_float.str, c_float.nbstr, c_float.decstr);
+		//printf("STR : |%s| && nbstr : |%s| && decstr : |%s|\n", c_float.str, c_float.nbstr, c_float.decstr);
 		decimal = (flags.precision * (decimal * 10.00));
 		decimal = decimal - (int)decimal;
 		decimal = (decimal * 10.00);

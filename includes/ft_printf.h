@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 17:21:51 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/06/05 14:38:08 by seanseau    ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -244,7 +244,7 @@ int					check_p_w_percent(t_flags flags);
 int				check_p_w_float(long double dec, t_flags flags);
 char			*ft_ftoa_decimal(int decpart, char *buf, int pos);
 
-char			*ft_ftoa(long double f, char *seg, t_flags flags);
+char			*ft_ftoa(long double d, int p);
 char			*ft_decpart(long double f, t_flags flags, int zer);
 
 int					ft_printf(const char *format,
