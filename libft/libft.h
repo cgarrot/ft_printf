@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/10/07 08:46:05 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/06/05 15:43:56 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/06/05 15:55:08 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -94,6 +94,8 @@ char			*ft_uhtoa(long long n);
 char			*ft_uhhtoa(long long n);
 char			*ft_htoa(short n);
 char			*ft_hhtoa(char n);
+char			*ft_strjoinfree(char *s1, char *s2, char i);
+char			*ft_strsubfree(char *s1, size_t start, size_t len);
 char			*ft_ftoa(long double d, int p);
 
 #endif
