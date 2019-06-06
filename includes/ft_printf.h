@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/06/05 14:38:08 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/06/05 16:48:59 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -103,7 +103,6 @@ typedef struct		s_check_hexa
 	int					tmp;
 }					t_check_hexa;
 
-
 typedef struct		s_check_float
 {
 	int					size;
@@ -113,9 +112,9 @@ typedef struct		s_check_float
 	int					declen;
 	int					nblen;
 	int					hashtag;
+	int					len;
+	int					nb;
 }					t_check_float;
-
-
 
 int					chose_flag(t_flags flags, va_list va, int nb);
 int					parse(char *str, va_list va);

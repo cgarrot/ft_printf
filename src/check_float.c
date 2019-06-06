@@ -6,7 +6,7 @@
 /*   By: seanseau <marvin@le-101.fr>                +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/06/05 14:32:22 by seanseau     #+#   ##    ##    #+#       */
-/*   Updated: 2019/06/05 15:41:59 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/06/05 17:54:47 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -24,12 +24,11 @@ void	get_parts(t_check_float *c_float, t_flags flags, int dec)
 	if (dec != 0.0)
 	{
 		c_float->nbstr = ft_strsub(c_float->str, 0, c_float->nblen);
-		c_float->decstr = ft_strsub(c_float->str, c_float->nblen,
-				ft_strlen(c_float->str) - (c_float->nblen));
-		c_float->declen = ft_strlen(c_float->decstr);
-		c_float->size = flags.width - ft_strlen(c_float->str);
+		c_float->decstr = ft_strsub(c_float->str, c_float->nblen, (int)ft_strlen(c_float->str) - (c_float->nblen));
+		c_float->declen = (int)ft_strlen(c_float->decstr);
+		c_float->size = flags.width - (int)ft_strlen(c_float->str);
 	}
-	else
+	/*else
 	{
 		c_float->str = "0.0";
 		c_float->size = flags.width - ft_strlen(c_float->str);
@@ -37,7 +36,7 @@ void	get_parts(t_check_float *c_float, t_flags flags, int dec)
 		c_float->decstr = ".0";
 		c_float->declen = 1;
 		c_float->nblen = 2;
-	}
+	}*/
 }
 
 void	print_width_noprec_nopoint(t_flags flags, int pre)
@@ -190,44 +189,40 @@ int		check_p_w_float(long double dec, t_flags flags)
 	long double		decimal;
 
 	i = flags.precision;
+	c_float.nb = 0;
 	c_float.str = ft_ftoa(dec, flags.precision);
 	decimal = dec;
+	c_float.len = (int)ft_strlen(c_float.str);
 	get_parts(&c_float, flags, dec);
-	if (c_float.size < 0)
+	/*if (c_float.size < 0)
 		c_float.size = 0;
 	if (flags.width && !flags.precision)
 	{
 		if (flags.point)
-			return (width_noprec_point(dec, flags, c_float));
+			c_float.nb += width_noprec_point(dec, flags, c_float);
 		if (!flags.point)
-			return (width_noprec_nopoint(dec, flags, c_float));
+			c_float.nb += width_noprec_nopoint(dec, flags, c_float);
 	}
 	if (flags.precision && !flags.width)
-		return (float_nowidth_prec(dec, decimal, i, c_float, flags));
+		c_float.nb += float_nowidth_prec(dec, decimal, i, c_float, flags);
 	if (flags.precision && flags.width)
 	{
-		//printf("STR : |%s| && nbstr : |%s| && decstr : |%s|\n", c_float.str, c_float.nbstr, c_float.decstr);
 		decimal = (flags.precision * (decimal * 10.00));
 		decimal = decimal - (int)decimal;
 		decimal = (decimal * 10.00);
 		if ((int)decimal >= 5 && c_float.str[ft_strlen(c_float.str) - 1] != 48)
-		{
 			if ((int)decimal != 9)
 			{
 				if (c_float.str[ft_strlen(c_float.str) - 1] != 48 &&
 						c_float.str[ft_strlen(c_float.str) - 1] != '9')
 					c_float.str[c_float.nblen + flags.precision] += 1;
 			}
-		}
-
 	}
 	if (dec > 0)
-		ft_putncaract('+', flags.plus);
+		ft_putncaract('+', flags.plus);*/
 	ft_putstr(c_float.str);
 	ft_putncaract('0', flags.precision - ft_strlen(c_float.decstr) - flags.plus);
-	return (ft_strlen(c_float.nbstr) + c_float.declen + flags.plus + 1);
-	if (dec > 0)
-		ft_putncaract('+', flags.plus);
-	ft_putstr(c_float.str);
-	return (ft_strlen(c_float.str) + flags.plus);
+	c_float.nb += (int)ft_strlen(c_float.nbstr) + c_float.declen + flags.plus + 1;
+	//ft_strdel(&c_float.str);
+	return (c_float.nb);
 }

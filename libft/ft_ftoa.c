@@ -1,87 +1,87 @@
 /* ************************************************************************** */
 /*                                                          LE - /            */
 /*                                                              /             */
-/*   floats_tools.c                                   .::    .:/ .      .::   */
+/*   ft_ftoa.c                                        .::    .:/ .      .::   */
 /*                                                 +:+:+   +:    +:  +:+:+    */
-/*   By: slopez <slopez@student.le-101.fr>          +:+   +:    +:    +:+     */
+/*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
-/*   Created: 2019/05/23 11:51:59 by slopez       #+#   ##    ##    #+#       */
-/*   Updated: 2019/06/05 15:43:12 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Created: 2019/06/06 14:34:01 by cgarrot      #+#   ##    ##    #+#       */
+/*   Updated: 2019/06/06 14:37:22 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int		ft_ilen(intmax_t n)
+static void		putint(intmax_t num, char *str, int count)
 {
-	int		count;
-
-	n = n < 0 ? -n : n;
-	count = 0;
-	while (n > 0 && ++count && (n /= 10))
-		;
-	return (count);
+	if (num == 0)
+		str[count] = '0';
+	while (num)
+	{
+		str[--count] = num % 10 + '0';
+		num /= 10;
+	}
 }
 
-static double	ft_power(double n, int p)
+static double	ft_power(double num, int p)
 {
 	if (p == 0)
 		return (1);
 	if (p == 1)
-		return (n);
-	return (n * ft_power(n, p - 1));
+		return (num);
+	return (num * ft_power(num, p - 1));
 }
 
-static void		ftoa_putint(intmax_t n, char *s, int count)
+static int		ft_ilen(intmax_t num)
 {
-	if (n == 0)
-		s[count] = '0';
-	while (n)
-	{
-		s[--count] = n % 10 + '0';
-		n /= 10;
-	}
+	int		count;
+
+	if (num < 0)
+		num = -num;
+	count = 0;
+	while (num > 0 && ++count && (num /= 10))
+		;
+	return (count);
 }
 
-static void		ftoa_putdec(long double d, int *i, int p, char *s)
+static void		putdec(long double d, int *i, int p, char *str)
 {
-	intmax_t n;
+	int		n;
 
 	n = d;
-	s[*i] = (p) ? '.' : '\0';
+	str[*i] = (p) ? '.' : '\0';
 	while (p--)
 	{
 		d = (d - n) * 10.0;
 		n = d;
-		s[++*i] = n + '0';
+		str[++*i] = n + '0';
 	}
 }
 
 char			*ft_ftoa(long double d, int p)
 {
-	intmax_t	n;
-	char		*s;
+	int			num;
+	char		*str;
 	int			i;
 	short int	isneg;
 
-	p = (p <= 0) ? 6 : p;
-	isneg = (d < 0 || d == -0.0) ? 1 : 0;
-	d = (isneg) ? -d : d;
+	isneg = 0;
+	if (p <= 0)
+		p = 6;
+	if (d < 0 || d == -0.0)
+		isneg = 1;
+	if (isneg)
+		d = -d;
 	d += (p >= 0) ? 5.000001 / ft_power(10, p + 1) : 0;
-	n = d;
-	i = ft_ilen(n) + isneg;
-	if (!(s = malloc(sizeof(char) * (i + p + (p > 0 ? 1 : 0) + 1))))
+	num = d;
+	i = ft_ilen(num) + isneg;
+	if (!(str = malloc(sizeof(char) * (i + p + (p > 0 ? 1 : 0) + 1))))
 		return (NULL);
-	if (d && !i)
-		s[i++] = '0';
-	else
-	{
-		s[0] = (isneg) ? '-' : '\0';
-		ftoa_putint(n, s, i);
-	}
-	i += (n == 0 ? 1 : 0);
-	ftoa_putdec(d, &i, p, s);
-	s[i + 1] = '\0';
-	return (s);
+	str[0] = (isneg) ? '-' : '\0';
+	putint(num, str, i);
+	i += (num == 0 ? 1 : 0);
+	putdec(d, &i, p, str);
+	str[i + 1] = '\0';
+	return (str);
 }
