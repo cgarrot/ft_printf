@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:33:57 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 17:24:16 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/06/06 16:41:00 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -62,7 +62,7 @@ int		chose_flag_f(t_flags flags, va_list va, int nb, t_args args)
 {
 	if (flags.flag == 'f')
 	{
-		if (flags.L == 1)
+		if (flags.large == 1)
 			args.f = va_arg(va, long double);
 		else
 			args.f = va_arg(va, double);

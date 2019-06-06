@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2019/04/11 16:04:59 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/05/27 12:44:00 by cgarrot     ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/06/06 16:36:35 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -59,4 +59,16 @@ void			init_octa(t_check_octa *c_octa, t_flags flags)
 	c_octa->size = flags.width - ft_strlen(c_octa->str);
 	if (c_octa->size < 0)
 		c_octa->size = 0;
+}
+
+void			init_float(t_flags flags, t_check_float *c_float)
+{
+	ft_strdel(&c_float->str);
+	c_float->str = "0.0";
+	c_float->size = flags.width - ft_strlen(c_float->str);
+	c_float->nbstr = "0";
+	c_float->decstr = ".0";
+	c_float->declen = 1;
+	c_float->nblen = 2;
+	c_float->yes = 1;
 }

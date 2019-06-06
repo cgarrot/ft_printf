@@ -6,7 +6,7 @@
 /*   By: cgarrot <marvin@le-101.fr>                 +:+   +:    +:    +:+     */
 /*                                                 #+#   #+    #+    #+#      */
 /*   Created: 2018/11/21 08:24:10 by cgarrot      #+#   ##    ##    #+#       */
-/*   Updated: 2019/06/06 14:47:20 by seanseau    ###    #+. /#+    ###.fr     */
+/*   Updated: 2019/06/06 16:40:11 by cgarrot     ###    #+. /#+    ###.fr     */
 /*                                                         /                  */
 /*                                                        /                   */
 /* ************************************************************************** */
@@ -29,7 +29,7 @@ typedef struct		s_flags
 	unsigned int		width;
 	unsigned int		precision;
 	unsigned int		percent;
-	unsigned int		L;
+	unsigned int		large;
 	unsigned int		l;
 	unsigned int		h;
 	unsigned int		ll;
@@ -103,21 +103,20 @@ typedef struct		s_check_hexa
 	int					tmp;
 }					t_check_hexa;
 
-
 typedef struct		s_check_float
 {
 	int					size;
 	char				*str;
 	char				*nbstr;
+	char				*nbstr2;
 	char				*decstr;
 	int					declen;
 	int					nblen;
 	int					hashtag;
 	int					ret;
 	int					strlen;
+	int					yes;
 }					t_check_float;
-
-
 
 int					chose_flag(t_flags flags, va_list va, int nb);
 int					parse(char *str, va_list va);
@@ -133,6 +132,7 @@ t_check_str			init_str(t_flags flags, int size, char *str);
 void				init(t_flags *flags);
 void				init_digit(t_check_digit *c_dig, long long digit);
 void				init_octa(t_check_octa *c_octa, t_flags flags);
+void				init_float(t_flags flags, t_check_float *c_float);
 
 int					ft_isflags(char c);
 int					ft_atoi_2(char const *str);
@@ -243,11 +243,26 @@ int					is_hexa_no_op(unsigned long long dec, t_flags flags,
 int					check_p_w_ptr(void *ptr, t_flags flags);
 int					check_p_w_percent(t_flags flags);
 
-int				check_p_w_float(long double dec, t_flags flags);
-char			*ft_ftoa_decimal(int decpart, char *buf, int pos);
-
-char			*ft_ftoa(long double d, int p);
-char			*ft_decpart(long double f, t_flags flags, int zer);
+int					check_p_w_float(long double dec, t_flags flags);
+void				free_float(t_check_float *c_float);
+char				*ft_decpart(long double f, t_flags flags, int zer);
+void				dec_arround(t_check_float *c_float, long double dec,
+		t_flags flags);
+int					float_nowidth_prec(long double dec, t_check_float c_float,
+		t_flags flags);
+int					float_nowidth_prec_sup_inf(long double dec,
+		t_check_float c_float, t_flags flags);
+int					width_noprec_nopoint(long double dec, t_flags flags,
+		t_check_float c_float);
+int					width_noprec_nopoint_null (t_flags flags);
+int					width_noprec_point(long double dec, t_flags flags,
+		t_check_float c_float);
+int					str_find(char *str, char c);
+int					width_noprec_point_nul(t_flags flags);
+void				print_width_noprec_point_nul(t_flags flags);
+void				print_width_noprec_nopoint(t_flags flags, int pre);
+void				get_parts(t_check_float *c_float, t_flags flags,
+		long double dec);
 
 int					ft_printf(const char *format,
 			...) __attribute__((format(printf,1,2)));
